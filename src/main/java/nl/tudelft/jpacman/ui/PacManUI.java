@@ -120,7 +120,7 @@ public class PacManUI extends JFrame {
         GamePlay.add(scorePanel, BorderLayout.NORTH);
         GamePlay.add(boardPanel, BorderLayout.CENTER);
 
-        boardPanel.setBackground("project-soften\\src\\main\\resources\\space.png");
+        boardPanel.setBackground("src\\main\\resources\\space.png");
         // create btn home conection to Gameplay
         btnStart.addActionListener(new ActionListener() {
 
@@ -130,7 +130,7 @@ public class PacManUI extends JFrame {
             }
 
         });
-        homeUI.setBackground("project-soften\\src\\main\\resources\\bg1.png");
+        homeUI.setBackground("src\\main\\resources\\bg1.png");
         homeUI.addButton(btnStart);
         cardPanel.add(homeUI, "First");
         cardPanel.add(GamePlay, "Second");
