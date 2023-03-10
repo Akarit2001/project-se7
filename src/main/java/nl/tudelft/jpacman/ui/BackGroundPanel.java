@@ -7,10 +7,6 @@ public class BackGroundPanel extends JPanel {
     private static ImageIcon background;
     private static JPanel panel;
 
-    public BackGroundPanel() {
-        setLayout(new BorderLayout());
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         // Call the super method

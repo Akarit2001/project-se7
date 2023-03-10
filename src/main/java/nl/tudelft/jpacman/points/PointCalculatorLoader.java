@@ -6,7 +6,8 @@ import java.net.URLClassLoader;
 import java.util.Properties;
 
 /**
- * The responsibility of this loader is to obtain the appropriate points calculator.
+ * The responsibility of this loader is to obtain the appropriate points
+ * calculator.
  * By default the {@link DefaultPointCalculator} is returned.
  */
 public class PointCalculatorLoader {
@@ -37,7 +38,7 @@ public class PointCalculatorLoader {
             return DefaultPointCalculator.class;
         }
 
-        URL[] urls = new URL[]{getClass().getClassLoader().getResource("scoreplugins/")};
+        URL[] urls = new URL[] { getClass().getClassLoader().getResource("scoreplugins/") };
 
         try (URLClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader())) {
             return classLoader.loadClass(strategyToLoad);

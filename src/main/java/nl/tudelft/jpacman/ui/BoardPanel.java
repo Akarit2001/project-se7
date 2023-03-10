@@ -31,7 +31,6 @@ class BoardPanel extends JPanel {
     /**
      * The background colour of the board.
      */
-    private static final Color BACKGROUND_COLOR = Color.WHITE;
 
     /**
      * The size (in pixels) of a square on the board. The initial size of this

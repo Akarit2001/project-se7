@@ -1,7 +1,7 @@
 package nl.tudelft.jpacman.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 import java.util.Map;
@@ -9,15 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-
 import javax.swing.*;
-//import net.bytebuddy.asm.Advice.This;
 import nl.tudelft.jpacman.game.Game;
-import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
 
 /**
@@ -34,7 +27,7 @@ import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
  * @author Jeroen Roosen
  *
  */
-public class PacManUI extends JFrame {
+public class PacManUI extends JFrame implements ActionListener {
 
     /**
      * Default serialisation UID.
@@ -81,26 +74,28 @@ public class PacManUI extends JFrame {
     CardLayout cardLayout = new CardLayout();
     // create a panel to hold the cards
     JPanel cardPanel = new JPanel();
+    JPanel homePanel = new JPanel();
+    final Game game;
+    JLabel title = new JLabel("PacMan");
+    JPanel GamePlay = new JPanel();
     // create a panel to hold the buttons
     JPanel buttonPanel = new JPanel();
-    // create two buttons to switch between cards
     JButton btnStart = new JButton("Start");
-    JPanel homePanel = new JPanel();
-    JLabel title = new JLabel("PacMan");
+    JButton btnWin = new JButton("Home");
 
-    JPanel GamePlay = new JPanel();
+    JButton restartButton = new JButton("Try again");
+    JButton homeButton = new JButton("Go home");
+    WinUI winUI = new WinUI();
     HomeUI homeUI = new HomeUI();
 
-    JButton btnBlack = new JButton("Start");
-
-    public PacManUI(final Game game, final Map<String, Action> buttons,
+    public PacManUI(Game game, final Map<String, Action> buttons,
             final Map<Integer, Action> keyMappings,
             ScoreFormatter scoreFormatter) {
 
         assert game != null;
         assert buttons != null;
         assert keyMappings != null;
-
+        this.game = game;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // addCard Layout to Card Panel
@@ -123,21 +118,18 @@ public class PacManUI extends JFrame {
         GamePlay.add(scorePanel, BorderLayout.NORTH);
         GamePlay.add(boardPanel, BorderLayout.CENTER);
 
+        // set theme
         boardPanel.setBackground("src\\main\\resources\\space.png");
-        // create btn home conection to Gameplay
-        btnStart.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                cardLayout.next(cardPanel);
-            }
-
-        });
-        homeUI.setBackground("src\\main\\resources\\bg1.png");
+        btnWin.addActionListener(this);
+        // home bg
         homeUI.addButton(btnStart);
-        cardPanel.add(homeUI, "First");
-        cardPanel.add(GamePlay, "Second");
-
+        winUI.addButton(btnWin);
+        btnStart.addActionListener(this);
+        btnStart.setBackground(new java.awt.Color(255, 255, 255, 0));
+        cardPanel.add(homeUI, "home");
+        cardPanel.add(GamePlay, "gameplay");
+        cardPanel.add(winUI, "Win");
         add(cardPanel);
         pack();
 
@@ -148,19 +140,102 @@ public class PacManUI extends JFrame {
      * intervals.
      */
     public void start() {
-
         setVisible(true);
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleAtFixedRate(this::nextFrame, 0, FRAME_INTERVAL, TimeUnit.MILLISECONDS);
-
+        service.scheduleAtFixedRate(this::displayGameOverDialog, 0, FRAME_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
     /**
      * Draws the next frame, i.e. refreshes the scores and game.
      */
-    private void nextFrame() {
+
+    private void displayGameOverDialog() {
         boardPanel.repaint();
         scorePanel.refresh();
+
+        if (game.isLost()) {
+            game.setLost(false);
+            JDialog gameOverDialog = createGameOverDialog();
+            gameOverDialog.setVisible(true);
+
+        } else if (game.isWin()) {
+            cardLayout.show(cardPanel, "Win");
+        }
     }
 
+    private JDialog createGameOverDialog() {
+        JDialog gameOverDialog = new JDialog();
+        gameOverDialog.setLayout(new BorderLayout());
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\space.png");
+                Image image = imageIcon.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
+        JLabel gameOverLabel = new JLabel("You Died", SwingConstants.CENTER);
+        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        gameOverLabel.setForeground(Color.RED);
+        int padding = 20;
+        gameOverLabel.setBorder(BorderFactory.createEmptyBorder(padding, 0, padding, 0));
+
+        JLabel scoreLabel = new JLabel("Your Score: " + game.getScore(), SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        scoreLabel.setForeground(Color.WHITE);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new java.awt.Color(255, 255, 255, 0));
+        JButton restartButton = createRestartButton(gameOverDialog);
+        JButton homeButton = createHomeButton(gameOverDialog);
+
+        gameOverDialog.setContentPane(backgroundPanel);
+        buttonPanel.add(restartButton);
+        buttonPanel.add(homeButton);
+
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        southPanel.setOpaque(false);
+
+        southPanel.add(buttonPanel);
+
+        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(gameOverLabel, BorderLayout.NORTH);
+        backgroundPanel.add(southPanel, BorderLayout.SOUTH);
+        backgroundPanel.add(scoreLabel, BorderLayout.CENTER);
+        gameOverDialog.setSize(300, 200);
+        gameOverDialog.setLocationRelativeTo(this);
+
+        return gameOverDialog;
+    }
+
+    private JButton createRestartButton(JDialog dialog) {
+        JButton restartButton = new JButton("Restart");
+        restartButton.addActionListener(e -> {
+            dialog.dispose();
+            game.reStart();
+        });
+        return restartButton;
+    }
+
+    private JButton createHomeButton(JDialog dialog) {
+        JButton homeButton = new JButton("Home");
+        homeButton.addActionListener(e -> {
+            dialog.dispose();
+            game.reStart();
+            cardLayout.show(cardPanel, "home");
+        });
+        return homeButton;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnStart) {
+            cardLayout.show(cardPanel, "gameplay");
+        } else if (e.getSource() == btnWin) {
+            cardLayout.show(cardPanel, "home");
+            game.setWin(false);
+        }
+    }
 }

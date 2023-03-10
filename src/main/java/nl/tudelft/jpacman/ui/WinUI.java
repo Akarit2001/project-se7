@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.*;
 
-public class HomeUI extends JPanel {
+public class WinUI extends JPanel {
 
     // create a panel to hold the buttons
     JPanel buttonPanel = new JPanel();
@@ -15,16 +15,11 @@ public class HomeUI extends JPanel {
     JLabel title = new JLabel("PacMan");
     ImageIcon background;
     JPanel bgJPanel = new JPanel();
-    JButton btnStart = new JButton("Start");
     JLabel bg = new JLabel();
 
-    public HomeUI() {
-        this.setBackground("src\\main\\resources\\bg1.png");
+    public WinUI() {
+        this.setBackground("src\\main\\resources\\space.png");
 
-    }
-
-    public void start() {
-        setVisible(true);
     }
 
     public void addButton(JButton btn) {
