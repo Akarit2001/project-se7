@@ -1,6 +1,5 @@
 package nl.tudelft.jpacman.npc.ghost;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,37 +13,34 @@ import nl.tudelft.jpacman.sprite.Sprite;
 
 /**
  * <p>
- * An implementation of the classic Pac-Man ghost Clyde.
+ * An implementation of the classic Pac-Man ghost Shadow.
  * </p>
  * <p>
- * Pokey needs a new nickname because out of all the ghosts,
- * Clyde is the least likely to "C'lyde" with Pac-Man. Clyde is always the last
- * ghost out of the regenerator, and the loner of the gang, usually off doing
- * his own thing when not patrolling the bottom-left corner of the maze. His
- * behavior is very random, so while he's not likely to be following you in hot
- * pursuit with the other ghosts, he is a little less predictable, and still a
- * danger.
+ * Nickname: Blinky. As his name implies, Shadow is usually a constant shadow on
+ * Pac-Man's tail. When he's not patrolling the top-right corner of the maze,
+ * Shadow tries to find the quickest route to Pac-Man's position. Despite the
+ * fact that Pinky's real name is Speedy, Shadow is actually the fastest of the
+ * ghosts because of when there are only a few pellets left, Blinky drastically
+ * speeds up, which can make him quite deadly. In the original Japanese version,
+ * his name is Oikake/Akabei.
  * </p>
  * <p>
- * <b>AI:</b> Clyde has two basic AIs, one for when he's far from Pac-Man, and
- * one for when he is near to Pac-Man. 
- * When Clyde is far away from Pac-Man (beyond eight grid spaces),
- * Clyde behaves very much like Blinky, trying to move to Pac-Man's exact
- * location. However, when Clyde gets within eight grid spaces of Pac-Man, he
- * automatically changes his behavior and runs away.
+ * <b>AI:</b> When the ghosts are not patrolling in their home corners (Blinky:
+ * top-right, Pinky: top-left, Inky: bottom-right, Clyde: bottom-left), Blinky
+ * will attempt to shorten the distance between Pac-Man and himself. If he has
+ * to choose between shortening the horizontal or vertical distance, he will
+ * choose to shorten whichever is greatest. For example, if Pac-Man is four grid
+ * spaces to the left, and seven grid spaces above Blinky, he'll try to move up
+ * towards Pac-Man before he moves to the left.
  * </p>
  * <p>
  * Source: http://strategywiki.org/wiki/Pac-Man/Getting_Started
  * </p>
  *
  * @author Jeroen Roosen
+ *
  */
 public class Clyde extends Ghost {
-
-    /**
-     * The amount of cells Clyde wants to stay away from Pac Man.
-     */
-    private static final int SHYNESS = 8;
 
     /**
      * The variation in intervals, this makes the ghosts look more dynamic and
@@ -55,25 +51,16 @@ public class Clyde extends Ghost {
     /**
      * The base movement interval.
      */
-    private static final int MOVE_INTERVAL = 250;
+    private static final int MOVE_INTERVAL = 300;
 
     /**
-     * A map of opposite directions.
-     */
-    private static final Map<Direction, Direction> OPPOSITES = new EnumMap<>(Direction.class);
-
-    static {
-        OPPOSITES.put(Direction.NORTH, Direction.SOUTH);
-        OPPOSITES.put(Direction.SOUTH, Direction.NORTH);
-        OPPOSITES.put(Direction.WEST, Direction.EAST);
-        OPPOSITES.put(Direction.EAST, Direction.WEST);
-    }
-
-    /**
-     * Creates a new "Clyde", a.k.a. "Pokey".
+     * Creates a new "Blinky", a.k.a. "Shadow".
      *
-     * @param spriteMap The sprites for this ghost.
+     * @param spriteMap
+     *                  The sprites for this ghost.
      */
+    // TODO Blinky should speed up when there are a few pellets left, but he
+    // has no way to find out how many there are.
     public Clyde(Map<Direction, Sprite> spriteMap) {
         super(spriteMap, MOVE_INTERVAL, INTERVAL_VARIATION);
     }
@@ -82,18 +69,21 @@ public class Clyde extends Ghost {
      * {@inheritDoc}
      *
      * <p>
-     * Clyde has two basic AIs, one for when he's far from Pac-Man, and one for
-     * when he is near to Pac-Man. 
-     * When Clyde is far away from Pac-Man (beyond eight grid spaces),
-     * Clyde behaves very much like Blinky, trying to move to Pac-Man's exact
-     * location. However, when Clyde gets within eight grid spaces of Pac-Man,
-     * he automatically changes his behavior and runs away
+     * When the ghosts are not patrolling in their home corners (Blinky:
+     * top-right, Pinky: top-left, Inky: bottom-right, Clyde: bottom-left),
+     * Blinky will attempt to shorten the distance between Pac-Man and himself.
+     * If he has to choose between shortening the horizontal or vertical
+     * distance, he will choose to shorten whichever is greatest. For example,
+     * if Pac-Man is four grid spaces to the left, and seven grid spaces above
+     * Blinky, he'll try to move up towards Pac-Man before he moves to the left.
      * </p>
      */
     @Override
     public Optional<Direction> nextAiMove() {
         assert hasSquare();
 
+        // TODO Blinky should patrol his corner every once in a while
+        // TODO Implement his actual behaviour instead of simply chasing.
         Unit nearest = Navigation.findNearest(Player.class, getSquare());
         if (nearest == null) {
             return Optional.empty();
@@ -103,11 +93,7 @@ public class Clyde extends Ghost {
 
         List<Direction> path = Navigation.shortestPath(getSquare(), target, this);
         if (path != null && !path.isEmpty()) {
-            Direction direction = path.get(0);
-            if (path.size() <= SHYNESS) {
-                return Optional.ofNullable(OPPOSITES.get(direction));
-            }
-            return Optional.of(direction);
+            return Optional.ofNullable(path.get(0));
         }
         return Optional.empty();
     }

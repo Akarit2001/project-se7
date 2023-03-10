@@ -13,44 +13,34 @@ import nl.tudelft.jpacman.sprite.Sprite;
 
 /**
  * <p>
- * An implementation of the classic Pac-Man ghost Speedy.
+ * An implementation of the classic Pac-Man ghost Shadow.
  * </p>
  * <p>
- * Nickname: Pinky. Speedy gets his name for an unusual reason. Speedy appears
- * to try to outsmart Pac-Man and crash into Pac-Man from the opposite
- * direction. The truth behind this is that when Speedy isn't patrolling the
- * top-left corner of the maze, he tries to attack Pac-Man by moving to where he
- * is going to be (that is, a few spaces ahead of Pac-Man's current direction)
- * instead of right where he is, as Blinky does. It's difficult to use this to
- * your advantage, but it's possible. If Pinky is coming at you and you face a
- * different direction, even briefly, he may just turn away and attempt to cut
- * you off in the new direction while you return to your original direction. In
- * the original Japanese version, his name is Machibuse/Pinky.
+ * Nickname: Blinky. As his name implies, Shadow is usually a constant shadow on
+ * Pac-Man's tail. When he's not patrolling the top-right corner of the maze,
+ * Shadow tries to find the quickest route to Pac-Man's position. Despite the
+ * fact that Pinky's real name is Speedy, Shadow is actually the fastest of the
+ * ghosts because of when there are only a few pellets left, Blinky drastically
+ * speeds up, which can make him quite deadly. In the original Japanese version,
+ * his name is Oikake/Akabei.
  * </p>
  * <p>
- * <b>AI:</b> When the ghosts are not patrolling their home corners, Pinky wants
- * to go to the place that is four grid spaces ahead of Pac-Man in the direction
- * that Pac-Man is facing. If Pac-Man is facing down, Pinky wants to go to the
- * location exactly four spaces below Pac-Man. Moving towards this place uses
- * the same logic that Blinky uses to find Pac-Man's exact location. Pinky is
- * affected by a targeting bug if Pac-Man is facing up - when he moves or faces
- * up, Pinky tries moving towards a point up, and left, four spaces.
- * </p>
- * <p>
- * <i>Note: In the original arcade series, the ghosts' genders are unspecified
- * and assumed to be male. In 1999, the USA division of Namco and Namco Hometech
- * developed the Pac-Man World series and declared Pinky to be female.</i>
+ * <b>AI:</b> When the ghosts are not patrolling in their home corners (Blinky:
+ * top-right, Pinky: top-left, Inky: bottom-right, Clyde: bottom-left), Blinky
+ * will attempt to shorten the distance between Pac-Man and himself. If he has
+ * to choose between shortening the horizontal or vertical distance, he will
+ * choose to shorten whichever is greatest. For example, if Pac-Man is four grid
+ * spaces to the left, and seven grid spaces above Blinky, he'll try to move up
+ * towards Pac-Man before he moves to the left.
  * </p>
  * <p>
  * Source: http://strategywiki.org/wiki/Pac-Man/Getting_Started
  * </p>
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  *
  */
 public class Pinky extends Ghost {
-
-    private static final int SQUARES_AHEAD = 4;
 
     /**
      * The variation in intervals, this makes the ghosts look more dynamic and
@@ -61,14 +51,16 @@ public class Pinky extends Ghost {
     /**
      * The base movement interval.
      */
-    private static final int MOVE_INTERVAL = 200;
+    private static final int MOVE_INTERVAL = 400;
 
     /**
-     * Creates a new "Pinky", a.k.a. "Speedy".
+     * Creates a new "Blinky", a.k.a. "Shadow".
      *
      * @param spriteMap
-     *            The sprites for this ghost.
+     *                  The sprites for this ghost.
      */
+    // TODO Blinky should speed up when there are a few pellets left, but he
+    // has no way to find out how many there are.
     public Pinky(Map<Direction, Sprite> spriteMap) {
         super(spriteMap, MOVE_INTERVAL, INTERVAL_VARIATION);
     }
@@ -77,28 +69,29 @@ public class Pinky extends Ghost {
      * {@inheritDoc}
      *
      * <p>
-     * When the ghosts are not patrolling their home corners, Pinky wants to go
-     * to the place that is four grid spaces ahead of Pac-Man in the direction
-     * that Pac-Man is facing. If Pac-Man is facing down, Pinky wants to go to
-     * the location exactly four spaces below Pac-Man. Moving towards this place
-     * uses the same logic that Blinky uses to find Pac-Man's exact location.
-     * Pinky is affected by a targeting bug if Pac-Man is facing up - when he
-     * moves or faces up, Pinky tries moving towards a point up, and left, four
-     * spaces.
+     * When the ghosts are not patrolling in their home corners (Blinky:
+     * top-right, Pinky: top-left, Inky: bottom-right, Clyde: bottom-left),
+     * Blinky will attempt to shorten the distance between Pac-Man and himself.
+     * If he has to choose between shortening the horizontal or vertical
+     * distance, he will choose to shorten whichever is greatest. For example,
+     * if Pac-Man is four grid spaces to the left, and seven grid spaces above
+     * Blinky, he'll try to move up towards Pac-Man before he moves to the left.
      * </p>
      */
     @Override
     public Optional<Direction> nextAiMove() {
         assert hasSquare();
 
-        Unit player = Navigation.findNearest(Player.class, getSquare());
-        if (player == null) {
+        // TODO Blinky should patrol his corner every once in a while
+        // TODO Implement his actual behaviour instead of simply chasing.
+        Unit nearest = Navigation.findNearest(Player.class, getSquare());
+        if (nearest == null) {
             return Optional.empty();
         }
-        assert player.hasSquare();
-        Square destination = player.squaresAheadOf(SQUARES_AHEAD);
+        assert nearest.hasSquare();
+        Square target = nearest.getSquare();
 
-        List<Direction> path = Navigation.shortestPath(getSquare(), destination, this);
+        List<Direction> path = Navigation.shortestPath(getSquare(), target, this);
         if (path != null && !path.isEmpty()) {
             return Optional.ofNullable(path.get(0));
         }

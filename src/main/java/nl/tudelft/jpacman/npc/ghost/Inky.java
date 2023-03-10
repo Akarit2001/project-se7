@@ -1,5 +1,9 @@
 package nl.tudelft.jpacman.npc.ghost;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
@@ -7,60 +11,36 @@ import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.sprite.Sprite;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 /**
  * <p>
- * An implementation of the classic Pac-Man ghost Inky.
+ * An implementation of the classic Pac-Man ghost Shadow.
  * </p>
- * <b>AI:</b> Inky has the most complicated AI of all. Inky considers two things: Blinky's
- * location, and the location two grid spaces ahead of Pac-Man. Inky draws a
- * line from Blinky to the spot that is two squares in front of Pac-Man and
- * extends that line twice as far. Therefore, if Inky is alongside Blinky
- * when they are behind Pac-Man, Inky will usually follow Blinky the whole
- * time. But if Inky is in front of Pac-Man when Blinky is far behind him,
- * Inky tends to want to move away from Pac-Man (in reality, to a point very
- * far ahead of Pac-Man). Inky is affected by a similar targeting bug that
- * affects Speedy. When Pac-Man is moving or facing up, the spot Inky uses to
- * draw the line is two squares above and left of Pac-Man.
+ * <p>
+ * Nickname: Blinky. As his name implies, Shadow is usually a constant shadow on
+ * Pac-Man's tail. When he's not patrolling the top-right corner of the maze,
+ * Shadow tries to find the quickest route to Pac-Man's position. Despite the
+ * fact that Pinky's real name is Speedy, Shadow is actually the fastest of the
+ * ghosts because of when there are only a few pellets left, Blinky drastically
+ * speeds up, which can make him quite deadly. In the original Japanese version,
+ * his name is Oikake/Akabei.
+ * </p>
+ * <p>
+ * <b>AI:</b> When the ghosts are not patrolling in their home corners (Blinky:
+ * top-right, Pinky: top-left, Inky: bottom-right, Clyde: bottom-left), Blinky
+ * will attempt to shorten the distance between Pac-Man and himself. If he has
+ * to choose between shortening the horizontal or vertical distance, he will
+ * choose to shorten whichever is greatest. For example, if Pac-Man is four grid
+ * spaces to the left, and seven grid spaces above Blinky, he'll try to move up
+ * towards Pac-Man before he moves to the left.
+ * </p>
  * <p>
  * Source: http://strategywiki.org/wiki/Pac-Man/Getting_Started
  * </p>
  *
  * @author Jeroen Roosen
- */
-
-/**
- * {@inheritDoc}
  *
- * <p>
- * Inky has the most complicated AI of all. Inky considers two things: Blinky's
- * location, and the location two grid spaces ahead of Pac-Man. Inky
- * draws a line from Blinky to the spot that is two squares in front of
- * Pac-Man and extends that line twice as far. Therefore, if Inky is
- * alongside Blinky when they are behind Pac-Man, Inky will usually
- * follow Blinky the whole time. But if Inky is in front of Pac-Man when
- * Blinky is far behind him, Inky tends to want to move away from Pac-Man
- * (in reality, to a point very far ahead of Pac-Man). Inky is affected
- * by a similar targeting bug that affects Speedy. When Pac-Man is moving or
- * facing up, the spot Inky uses to draw the line is two squares above
- * and left of Pac-Man.
- * </p>
- *
- * <p>
- * <b>Implementation:</b>
- * To actually implement this in jpacman we have the following approximation:
- * first determine the square of Blinky (A) and the square 2
- * squares away from Pac-Man (B). Then determine the shortest path from A to
- * B regardless of terrain and walk that same path from B. This is the
- * destination.
- * </p>
  */
 public class Inky extends Ghost {
-
-    private static final int SQUARES_AHEAD = 2;
 
     /**
      * The variation in intervals, this makes the ghosts look more dynamic and
@@ -71,44 +51,47 @@ public class Inky extends Ghost {
     /**
      * The base movement interval.
      */
-    private static final int MOVE_INTERVAL = 250;
+    private static final int MOVE_INTERVAL = 350;
 
     /**
-     * Creates a new "Inky".
+     * Creates a new "Blinky", a.k.a. "Shadow".
      *
-     * @param spriteMap The sprites for this ghost.
+     * @param spriteMap
+     *                  The sprites for this ghost.
      */
+    // TODO Blinky should speed up when there are a few pellets left, but he
+    // has no way to find out how many there are.
     public Inky(Map<Direction, Sprite> spriteMap) {
         super(spriteMap, MOVE_INTERVAL, INTERVAL_VARIATION);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * When the ghosts are not patrolling in their home corners (Blinky:
+     * top-right, Pinky: top-left, Inky: bottom-right, Clyde: bottom-left),
+     * Blinky will attempt to shorten the distance between Pac-Man and himself.
+     * If he has to choose between shortening the horizontal or vertical
+     * distance, he will choose to shorten whichever is greatest. For example,
+     * if Pac-Man is four grid spaces to the left, and seven grid spaces above
+     * Blinky, he'll try to move up towards Pac-Man before he moves to the left.
+     * </p>
+     */
     @Override
     public Optional<Direction> nextAiMove() {
         assert hasSquare();
 
-        // Find the nearest Blinky and the player
-        Unit blinky = Navigation.findNearest(Blinky.class, getSquare());
-        Unit player = Navigation.findNearest(Player.class, getSquare());
-
-        if (blinky == null || player == null) {
+        // TODO Blinky should patrol his corner every once in a while
+        // TODO Implement his actual behaviour instead of simply chasing.
+        Unit nearest = Navigation.findNearest(Player.class, getSquare());
+        if (nearest == null) {
             return Optional.empty();
         }
+        assert nearest.hasSquare();
+        Square target = nearest.getSquare();
 
-        assert player.hasSquare();
-
-        // Determine the square that is two squares ahead of the player
-        Square playerDestination = player.squaresAheadOf(SQUARES_AHEAD);
-
-        // Draw a line from Blinky to the player destination, and extend it twice as far
-        // to get the final destination for Inky
-        Square blinkySquare = blinky.getSquare();
-        int deltaX = playerDestination.getX() - blinkySquare.getX();
-        int deltaY = playerDestination.getY() - blinkySquare.getY();
-        Square destination = playerDestination.getSquareAt(deltaX * 2, deltaY * 2);
-
-        // Find the shortest path from Inky's current square to the destination
-        List<Direction> path = Navigation.shortestPath(getSquare(), destination, this);
-
+        List<Direction> path = Navigation.shortestPath(getSquare(), target, this);
         if (path != null && !path.isEmpty()) {
             return Optional.ofNullable(path.get(0));
         }
