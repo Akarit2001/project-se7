@@ -1,7 +1,9 @@
 package nl.tudelft.jpacman.sprite;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import nl.tudelft.jpacman.PacmanConfigurationException;
@@ -25,7 +27,7 @@ public class PacManSprites extends SpriteStore {
             Direction.SOUTH,
             Direction.WEST
     };
-
+    private List<String> wList = Arrays.asList("strawberry.png","wall.png","bell.png","cherry.png");
     /**
      * The image size in pixels.
      */
@@ -115,8 +117,9 @@ public class PacManSprites extends SpriteStore {
     /**
      * @return The sprite for the wall.
      */
-    public Sprite getWallSprite() {
-        return loadSprite("/sprite/wall.png");
+    public Sprite getWallSprite(int i) {
+        
+        return loadSprite("/sprite/"+wList.get(i));
     }
 
     /**
