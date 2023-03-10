@@ -2,6 +2,7 @@ package nl.tudelft.jpacman.integration;
 
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.game.Game;
+import nl.tudelft.jpacman.ui.ScorePanel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,16 @@ public class StartupSystemTest {
         assertThat(getGame().isInProgress()).isTrue();
     }
 
+    /**
+     * gameEnd
+     * */
+    @Test
+    public void gameIsEndGame(){
+        launcher.launch();
+
+        getGame().levelLost();
+        assertThat(getGame().isInProgress()).isFalse();
+    }
 
     private Game getGame() {
         return launcher.getGame();

@@ -218,7 +218,7 @@ public class Level {
             if (!isInProgress()) {
                 return;
             }
-            stopNPCs();
+            startNPCs();
             inProgress = false;
         }
     }

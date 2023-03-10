@@ -15,8 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import javax.swing.*;
-import net.bytebuddy.asm.Advice.This;
+//import net.bytebuddy.asm.Advice.This;
 import nl.tudelft.jpacman.game.Game;
+import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
 
 /**
@@ -90,6 +91,8 @@ public class PacManUI extends JFrame {
     JPanel GamePlay = new JPanel();
     HomeUI homeUI = new HomeUI();
 
+    JButton btnBlack = new JButton("Start");
+
     public PacManUI(final Game game, final Map<String, Action> buttons,
             final Map<Integer, Action> keyMappings,
             ScoreFormatter scoreFormatter) {
@@ -130,6 +133,7 @@ public class PacManUI extends JFrame {
             }
 
         });
+
         homeUI.setBackground("src\\main\\resources\\bg1.png");
         homeUI.addButton(btnStart);
         cardPanel.add(homeUI, "First");
@@ -145,9 +149,11 @@ public class PacManUI extends JFrame {
      * intervals.
      */
     public void start() {
+
         setVisible(true);
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleAtFixedRate(this::nextFrame, 0, FRAME_INTERVAL, TimeUnit.MILLISECONDS);
+
     }
 
     /**
