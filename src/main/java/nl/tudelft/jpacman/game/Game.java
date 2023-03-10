@@ -114,8 +114,6 @@ public abstract class Game implements LevelObserver {
 
     @Override
     public void levelLost() {
-
-
     }
 
     public void setIsprogress(Boolean b) {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.Player;
+import nl.tudelft.jpacman.level.PlayerFactory;
 
 import com.google.common.collect.ImmutableList;
 import nl.tudelft.jpacman.points.PointCalculator;
@@ -27,7 +28,7 @@ public class SinglePlayerGame extends Game {
 
     private Level level;
     private int MAP_NUMBER = 0;
-
+    private PlayerFactory playerFactory;
     /**
      * Create a new single player game for the provided level and player.
      *
@@ -38,7 +39,7 @@ public class SinglePlayerGame extends Game {
      * @param pointCalculator
      *                        The way to calculate points upon collisions.
      */
-    protected SinglePlayerGame(Player player, List<Level> level, PointCalculator pointCalculator) {
+    protected SinglePlayerGame(Player player, List<Level> level, PointCalculator pointCalculator,PlayerFactory playerFactory) {
         super(pointCalculator);
 
         assert player != null;
@@ -48,6 +49,7 @@ public class SinglePlayerGame extends Game {
         this.listlevel = level;
         this.level = listlevel.get(MAP_NUMBER);
         this.level.registerPlayer(player);
+        this.playerFactory =playerFactory;
     }
 
     @Override
@@ -66,6 +68,11 @@ public class SinglePlayerGame extends Game {
 
     }
 
+    // public void stateBegin(){
+    //     this.level.removeObserver(this);
+    //     this.level = listlevel.get(0);
+    //     this.level.registerPlayer(player);
+    // }
     @Override
     public void levelWon() {
 
@@ -76,8 +83,13 @@ public class SinglePlayerGame extends Game {
 
     @Override
     public void levelLost() {
+        System.out.print("You die.");
 
+        // this.level.removeObserver(this);
+        // this.level = listlevel.get(MAP_NUMBER);
+        // this.level.registerPlayer(playerFactory.createPacMan());
         stop();
+        // getLevel();
 
     }
 

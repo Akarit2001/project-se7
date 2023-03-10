@@ -133,7 +133,6 @@ public class PacManUI extends JFrame {
             }
 
         });
-
         homeUI.setBackground("src\\main\\resources\\bg1.png");
         homeUI.addButton(btnStart);
         cardPanel.add(homeUI, "First");
