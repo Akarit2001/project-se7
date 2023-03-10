@@ -1,5 +1,6 @@
 package nl.tudelft.jpacman;
 
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ import nl.tudelft.jpacman.ui.Action;
 import nl.tudelft.jpacman.ui.HomeUI;
 import nl.tudelft.jpacman.ui.PacManUI;
 import nl.tudelft.jpacman.ui.PacManUiBuilder;
+import javax.swing.Timer;
 
 /**
  * Creates and launches the JPacMan UI.
- * 
+ *
  * @author Jeroen Roosen
  */
 @SuppressWarnings("PMD.TooManyMethods")
@@ -38,12 +40,14 @@ public class Launcher {
 
     public static final String DEFAULT_MAP = "/board0.txt";
     private List<String> allLevel = Arrays.asList("/board0.txt", "/board1.txt", "/board2.txt", "/board3.txt",
-            "/board4.txt");
+        "/board4.txt");
     private static String levelMap = DEFAULT_MAP;
 
     private PacManUI pacManUI;
     private Game game;
-
+    private final int DELAY_MS = 100; // milliseconds between each movement
+    private final Timer timer = new Timer(DELAY_MS, null); // create a timer with an empty ActionListener
+    private final ActionListener[] currentAction = {null}; // to keep track of the current ActionListener
     /**
      * @return The game object this launcher will start when {@link #launch()}
      *         is called.
@@ -105,7 +109,7 @@ public class Launcher {
             return all_level;
         } catch (IOException e) {
             throw new PacmanConfigurationException(
-                    "Unable to create level, name = ", e);
+                "Unable to create level, name = ", e);
         }
     }
 
@@ -168,16 +172,27 @@ public class Launcher {
      *                The {@link PacManUiBuilder} that will provide the UI.
      */
     protected void addSinglePlayerKeys(final PacManUiBuilder builder) {
-        builder.addKey(KeyEvent.VK_UP, moveTowardsDirection(Direction.NORTH))
-                .addKey(KeyEvent.VK_DOWN, moveTowardsDirection(Direction.SOUTH))
-                .addKey(KeyEvent.VK_LEFT, moveTowardsDirection(Direction.WEST))
-                .addKey(KeyEvent.VK_RIGHT, moveTowardsDirection(Direction.EAST));
+        final Action stopMoving = () -> { timer.stop(); };
+        builder .addKey(KeyEvent.VK_UP, continueMoveTowardsDirection(Direction.NORTH), stopMoving)
+            .addKey(KeyEvent.VK_DOWN, continueMoveTowardsDirection(Direction.SOUTH), stopMoving)
+            .addKey(KeyEvent.VK_LEFT, continueMoveTowardsDirection(Direction.WEST), stopMoving)
+            .addKey(KeyEvent.VK_RIGHT, continueMoveTowardsDirection(Direction.EAST), stopMoving)
+            .addKey(KeyEvent.VK_W, continueMoveTowardsDirection(Direction.NORTH), stopMoving)
+            .addKey(KeyEvent.VK_S, continueMoveTowardsDirection(Direction.SOUTH), stopMoving)
+            .addKey(KeyEvent.VK_A, continueMoveTowardsDirection(Direction.WEST), stopMoving)
+            .addKey(KeyEvent.VK_D, continueMoveTowardsDirection(Direction.EAST), stopMoving);
     }
-
-    private Action moveTowardsDirection(Direction direction) {
+    private Action continueMoveTowardsDirection(Direction direction) {
         return () -> {
-            assert game != null;
-            getGame().move(getSinglePlayer(getGame()), direction);
+            // remove the previous ActionListener before adding a new one
+            timer.removeActionListener(currentAction[0]);
+            final ActionListener newAction = event -> {
+                assert game != null;
+                getGame().move(getGame().getPlayers().get(0), direction);
+            };
+            currentAction[0] = newAction;
+            timer.addActionListener(currentAction[0]);
+            timer.start();
         };
     }
 
