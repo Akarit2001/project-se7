@@ -51,7 +51,7 @@ public class GhostFactory {
      * @return A new Inky.
      */
     public Ghost createInky() {
-        return new Inky(sprites.getGhostSprite(GhostColor.CYAN));
+        return new Pinky(sprites.getGhostSprite(GhostColor.CYAN));
     }
 
     /**

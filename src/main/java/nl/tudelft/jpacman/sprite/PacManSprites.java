@@ -135,6 +135,9 @@ public class PacManSprites extends SpriteStore {
     public Sprite getPelletSprite() {
         return loadSprite("/sprite/pellet.png");
     }
+    public Sprite getSuperPelletSprite() {
+        return loadSprite("/sprite/melon.png");
+    }
 
     /**
      * Overloads the default sprite loading, ignoring the exception. This class

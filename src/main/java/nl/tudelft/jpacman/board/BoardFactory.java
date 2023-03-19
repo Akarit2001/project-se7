@@ -75,7 +75,7 @@ public class BoardFactory {
      * @return A new square that cannot be occupied by any unit.
      */
     public Square createWall() {
-        return new Wall(sprites.getWallSprite(randomNum));
+        return new Wall(sprites.getWallSprite(1));
     }
 
     /**

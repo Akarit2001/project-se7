@@ -1,9 +1,12 @@
 package nl.tudelft.jpacman.level;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Unit;
+import nl.tudelft.jpacman.skills.Skills;
 import nl.tudelft.jpacman.sprite.AnimatedSprite;
 import nl.tudelft.jpacman.sprite.Sprite;
 
@@ -18,6 +21,14 @@ public class Player extends Unit {
      * The amount of points accumulated by this player.
      */
     private int score;
+    private int seconds;
+
+    private boolean isSkillActive;
+
+
+    public void setIsSkillActive(boolean isSkillActive) {
+        this.isSkillActive = isSkillActive;
+    }
 
     /**
      * The animations for every direction.
@@ -54,6 +65,7 @@ public class Player extends Unit {
         this.sprites = spriteMap;
         this.deathSprite = deathAnimation;
         deathSprite.setAnimating(false);
+        isSkillActive = false;
     }
 
     /**
@@ -133,5 +145,36 @@ public class Player extends Unit {
 
     public void reSetScore() {
         score = 0;
+    }
+
+    public void setSkill(Skills skills) {
+        if(!isSkillActive){
+            Timer timer = new Timer();
+
+            seconds = 0;
+            isSkillActive =true;
+        
+            // Schedule a task to run every 1 second
+            System.out.println("player skill executed.");
+            timer.schedule(new TimerTask() {
+              public void run() {
+                
+                if (seconds < 5 && isAlive()) {
+                  System.out.println("Text printed after " + ++seconds + " seconds");
+                  addPoints(15);
+                  
+                } else {
+                  // Stop the timer after 10 seconds
+                  System.out.println("player skill canceled.");
+                  isSkillActive=false;
+                  seconds = 0;
+                  timer.cancel();
+                }
+              }
+            }, 0, 1000);
+            skills.execute();
+        }
+
+
     }
 }

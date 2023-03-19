@@ -81,13 +81,14 @@ public class PacManUI extends JFrame implements ActionListener {
     // create a panel to hold the buttons
     JPanel buttonPanel = new JPanel();
     JButton btnStart = new JButton("Start");
+    JButton btnpacmanSkinConfirm = new JButton("Confirm");
     JButton btnWin = new JButton("Home");
 
     JButton restartButton = new JButton("Try again");
     JButton homeButton = new JButton("Go home");
     WinUI winUI = new WinUI();
     HomeUI homeUI = new HomeUI();
-
+    PacManThemesUI pacManSkinsUI = new PacManThemesUI(this);
     public PacManUI(Game game, final Map<String, Action> buttons,
             final Map<Integer, Action> keyMappings,
             ScoreFormatter scoreFormatter) {
@@ -124,10 +125,14 @@ public class PacManUI extends JFrame implements ActionListener {
         btnWin.addActionListener(this);
         // home bg
         homeUI.addButton(btnStart);
+        pacManSkinsUI.addButton(btnpacmanSkinConfirm);
         winUI.addButton(btnWin);
         btnStart.addActionListener(this);
         btnStart.setBackground(new java.awt.Color(255, 255, 255, 0));
+        btnpacmanSkinConfirm.addActionListener(this);
+        btnpacmanSkinConfirm.setBackground(new java.awt.Color(255, 255, 255, 0));
         cardPanel.add(homeUI, "home");
+        cardPanel.add(pacManSkinsUI, "pacManSkins");
         cardPanel.add(GamePlay, "gameplay");
         cardPanel.add(winUI, "Win");
         add(cardPanel);
@@ -232,10 +237,21 @@ public class PacManUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnStart) {
+            cardLayout.show(cardPanel, "pacManSkins");
+        } 
+        else if (e.getSource() == btnpacmanSkinConfirm) {
             cardLayout.show(cardPanel, "gameplay");
-        } else if (e.getSource() == btnWin) {
+            game.setWin(false);
+        }
+        else if (e.getSource() == btnWin) {
             cardLayout.show(cardPanel, "home");
             game.setWin(false);
+        }
+        else if (e.getSource() == pacManSkinsUI.getBtnLeft()) {
+            pacManSkinsUI.PrveIcon();
+        }
+        else if (e.getSource() == pacManSkinsUI.getBtnRight()) {
+            pacManSkinsUI.NextIcon();
         }
     }
 }

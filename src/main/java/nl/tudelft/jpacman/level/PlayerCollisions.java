@@ -47,9 +47,13 @@ public class PlayerCollisions implements CollisionMap {
         if (collidedOn instanceof Ghost) {
             playerVersusGhost(player, (Ghost) collidedOn);
         }
-        if (collidedOn instanceof Pellet) {
+        if (collidedOn instanceof SuperPellet) {
+            playerVersusSuperPellet(player, (SuperPellet) collidedOn);
+        }
+        else if (collidedOn instanceof Pellet) {
             playerVersusPellet(player, (Pellet) collidedOn);
         }
+  
     }
 
     private void ghostColliding(Ghost ghost, Unit collidedOn) {
@@ -90,6 +94,11 @@ public class PlayerCollisions implements CollisionMap {
     public void playerVersusPellet(Player player, Pellet pellet) {
         pointCalculator.consumedAPellet(player, pellet);
         pellet.leaveSquare();
+    }
+
+    public void playerVersusSuperPellet(Player player, SuperPellet superPellet) {
+        pointCalculator.consumedASuperPellet(player, superPellet);
+        superPellet.leaveSquare();
     }
 
 }

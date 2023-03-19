@@ -3,6 +3,7 @@ package nl.tudelft.jpacman.points;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.level.Pellet;
 import nl.tudelft.jpacman.level.Player;
+import nl.tudelft.jpacman.level.SuperPellet;
 import nl.tudelft.jpacman.npc.Ghost;
 
 /**
@@ -34,7 +35,7 @@ public interface PointCalculator {
      *            The pellet consumed.
      */
     void consumedAPellet(Player player, Pellet pellet);
-
+    void consumedASuperPellet(Player player, SuperPellet pellet);
     /**
      * Method called whevener a player makes a successful move.
      * It can be used to update the player's points accordingly.
