@@ -5,7 +5,7 @@ import nl.tudelft.jpacman.sprite.PacManSprites;
 /**
  * Factory that creates Players.
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  */
 public class PlayerFactory {
 
@@ -18,7 +18,7 @@ public class PlayerFactory {
      * Creates a new player factory.
      *
      * @param spriteStore
-     *            The sprite store containing the Pac-Man sprites.
+     *                    The sprite store containing the Pac-Man sprites.
      */
     public PlayerFactory(PacManSprites spriteStore) {
         this.sprites = spriteStore;

@@ -99,13 +99,14 @@ public class PacManUiBuilder {
     /**
      * Adds a key listener to the UI.
      *
-     * @param keyCode    The key code of the key as used by
-     *                   {@link java.awt.event.KeyEvent}.
-     * @param action     The action to perform when the key is pressed.
-     * @param stopMoving
+     * @param keyCode
+     *                The key code of the key as used by
+     *                {@link java.awt.event.KeyEvent}.
+     * @param action
+     *                The action to perform when the key is pressed.
      * @return The builder.
      */
-    public PacManUiBuilder addKey(Integer keyCode, Action action, Action stopMoving) {
+    public PacManUiBuilder addKey(Integer keyCode, Action action) {
         assert keyCode != null;
         assert action != null;
 

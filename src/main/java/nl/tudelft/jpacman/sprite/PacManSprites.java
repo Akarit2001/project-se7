@@ -1,9 +1,7 @@
 package nl.tudelft.jpacman.sprite;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import nl.tudelft.jpacman.PacmanConfigurationException;
@@ -15,6 +13,7 @@ import nl.tudelft.jpacman.npc.ghost.GhostColor;
  *
  * @author Jeroen Roosen
  */
+// Merge my code with the previous one.
 public class PacManSprites extends SpriteStore {
 
     /**
@@ -27,7 +26,7 @@ public class PacManSprites extends SpriteStore {
             Direction.SOUTH,
             Direction.WEST
     };
-    private List<String> wList = Arrays.asList("strawberry.png","wall.png","bell.png","cherry.png");
+
     /**
      * The image size in pixels.
      */
@@ -53,11 +52,22 @@ public class PacManSprites extends SpriteStore {
      */
     private static final int ANIMATION_DELAY = 200;
 
+    // default skin
+    private String pacmanSkin = "/sprite/pacman1.png";
+
     /**
      * @return A map of animated Pac-Man sprites for all directions.
      */
+
+    // set Pacman skin
+
     public Map<Direction, Sprite> getPacmanSprites() {
-        return directionSprite("/sprite/pacman.png", PACMAN_ANIMATION_FRAMES);
+        return directionSprite(pacmanSkin, PACMAN_ANIMATION_FRAMES);
+
+    }
+
+    public void setPacmanSkin(String pacmanSkin) {
+        this.pacmanSkin = pacmanSkin;
     }
 
     /**
@@ -117,9 +127,8 @@ public class PacManSprites extends SpriteStore {
     /**
      * @return The sprite for the wall.
      */
-    public Sprite getWallSprite(int i) {
-        
-        return loadSprite("/sprite/"+wList.get(i));
+    public Sprite getWallSprite() {
+        return loadSprite("/sprite/wall.png");
     }
 
     /**
@@ -151,4 +160,5 @@ public class PacManSprites extends SpriteStore {
             throw new PacmanConfigurationException("Unable to load sprite: " + resource, e);
         }
     }
+
 }

@@ -9,6 +9,7 @@ import nl.tudelft.jpacman.level.Player;
 
 import com.google.common.collect.ImmutableList;
 import nl.tudelft.jpacman.points.PointCalculator;
+import nl.tudelft.jpacman.sprite.PacManSprites;
 
 /**
  * A game with one player and a single level.
@@ -21,7 +22,7 @@ public class SinglePlayerGame extends Game {
      * The player of this game.
      */
     private final Player player;
-
+    private final PacManSprites sprites = new PacManSprites();
     /**
      * The level of this game.
      */
@@ -61,7 +62,7 @@ public class SinglePlayerGame extends Game {
 
     public void nextState() {
         MAP_NUMBER++;
-        if (MAP_NUMBER > 4) {
+        if (MAP_NUMBER > 0) {
             MAP_NUMBER = 0;
             setWin(true);
         }
@@ -118,6 +119,11 @@ public class SinglePlayerGame extends Game {
     @Override
     public int getScore() {
         return player.getScore();
+    }
+
+    public void setSkin(String skin) {
+        sprites.setPacmanSkin(skin);
+        player.setSprites(sprites.getPacmanSprites());
     }
 
 }

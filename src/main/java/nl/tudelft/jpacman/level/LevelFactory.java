@@ -17,7 +17,7 @@ import nl.tudelft.jpacman.sprite.Sprite;
 /**
  * Factory that creates levels and units.
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  */
 public class LevelFactory {
 
@@ -56,15 +56,15 @@ public class LevelFactory {
      * Creates a new level factory.
      *
      * @param spriteStore
-     *            The sprite store providing the sprites for units.
+     *                        The sprite store providing the sprites for units.
      * @param ghostFactory
-     *            The factory providing ghosts.
+     *                        The factory providing ghosts.
      * @param pointCalculator
-     *            The algorithm to calculate the points.
+     *                        The algorithm to calculate the points.
      */
     public LevelFactory(PacManSprites spriteStore,
-                        GhostFactory ghostFactory,
-                        PointCalculator pointCalculator) {
+            GhostFactory ghostFactory,
+            PointCalculator pointCalculator) {
         this.sprites = spriteStore;
         this.ghostIndex = -1;
         this.ghostFact = ghostFactory;
@@ -75,11 +75,13 @@ public class LevelFactory {
      * Creates a new level from the provided data.
      *
      * @param board
-     *            The board with all ghosts and pellets occupying their squares.
+     *                       The board with all ghosts and pellets occupying their
+     *                       squares.
      * @param ghosts
-     *            A list of all ghosts on the board.
+     *                       A list of all ghosts on the board.
      * @param startPositions
-     *            A list of squares from which players may start the game.
+     *                       A list of squares from which players may start the
+     *                       game.
      * @return A new level for the board.
      */
     public Level createLevel(Board board, List<Ghost> ghosts, List<Square> startPositions) {
@@ -137,7 +139,7 @@ public class LevelFactory {
          * Creates a new random ghost.
          *
          * @param ghostSprite
-         *            The sprite for the ghost.
+         *                    The sprite for the ghost.
          */
         RandomGhost(Map<Direction, Sprite> ghostSprite) {
             super(ghostSprite, (int) DELAY, 0);

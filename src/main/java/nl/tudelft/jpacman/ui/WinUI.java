@@ -18,13 +18,13 @@ public class WinUI extends JPanel {
     JLabel bg = new JLabel();
 
     public WinUI() {
-        this.setBackground("src\\main\\resources\\space.png");
+        this.setBackground("src\\main\\resources\\5.png");
 
     }
 
     public void addButton(JButton btn) {
         buttonPanel.add(btn);
-        ImageIcon icon = new ImageIcon("src\\main\\resources\\bgButton.png");
+        ImageIcon icon = new ImageIcon("src\\main\\resources\\btnHome.png");
 
         // Set the icon of the button
         Image scaledImage = icon.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);

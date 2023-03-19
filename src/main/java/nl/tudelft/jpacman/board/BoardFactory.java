@@ -1,7 +1,5 @@
 package nl.tudelft.jpacman.board;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.sprite.Sprite;
 
@@ -17,7 +15,6 @@ public class BoardFactory {
      * The sprite store providing the sprites for the background.
      */
     private final PacManSprites sprites;
-    int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 
     /**
      * Creates a new BoardFactory that will create a board with the provided
@@ -75,7 +72,7 @@ public class BoardFactory {
      * @return A new square that cannot be occupied by any unit.
      */
     public Square createWall() {
-        return new Wall(sprites.getWallSprite(randomNum));
+        return new Wall(sprites.getWallSprite());
     }
 
     /**

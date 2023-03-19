@@ -3,6 +3,8 @@ package nl.tudelft.jpacman.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -11,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 import nl.tudelft.jpacman.game.Game;
+import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
 
 /**
@@ -76,17 +79,21 @@ public class PacManUI extends JFrame implements ActionListener {
     JPanel cardPanel = new JPanel();
     JPanel homePanel = new JPanel();
     final Game game;
-    JLabel title = new JLabel("PacMan");
     JPanel GamePlay = new JPanel();
-    // create a panel to hold the buttons
     JPanel buttonPanel = new JPanel();
-    JButton btnStart = new JButton("Start");
-    JButton btnWin = new JButton("Home");
 
-    JButton restartButton = new JButton("Try again");
-    JButton homeButton = new JButton("Go home");
+    JButton btnWin = new JButton("Home");
+    JButton btnSkin = new JButton("select");
+    JButton btnBack = new JButton("back");
+    JButton restartButton = new JButton("restart");
+    JButton homeButton = new JButton("home");
+    JButton btnStart = new JButton("Start");
+
     WinUI winUI = new WinUI();
     HomeUI homeUI = new HomeUI();
+
+    PacManSprites pacmanSprites;
+    PacmanSkinUI pacmanSkinUI;
 
     public PacManUI(Game game, final Map<String, Action> buttons,
             final Map<Integer, Action> keyMappings,
@@ -96,6 +103,9 @@ public class PacManUI extends JFrame implements ActionListener {
         assert buttons != null;
         assert keyMappings != null;
         this.game = game;
+
+        // set size JFrame
+        setMinimumSize(new Dimension(600, 400));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // addCard Layout to Card Panel
@@ -110,7 +120,7 @@ public class PacManUI extends JFrame implements ActionListener {
         if (scoreFormatter != null) {
             scorePanel.setScoreFormatter(scoreFormatter);
         }
-
+        pacmanSkinUI = new PacmanSkinUI(pacmanSprites, game);
         boardPanel = new BoardPanel(game);
         GamePlay.setLayout(new BorderLayout());
         boardPanel.setOpaque(false);
@@ -122,17 +132,36 @@ public class PacManUI extends JFrame implements ActionListener {
         boardPanel.setBackground("src\\main\\resources\\space.png");
 
         btnWin.addActionListener(this);
-        // home bg
-        homeUI.addButton(btnStart);
+        btnSkin.addActionListener(this);
+        btnBack.addActionListener(this);
+
         winUI.addButton(btnWin);
+        pacmanSkinUI.addButton(btnSkin, btnBack);
         btnStart.addActionListener(this);
-        btnStart.setBackground(new java.awt.Color(255, 255, 255, 0));
+
         cardPanel.add(homeUI, "home");
         cardPanel.add(GamePlay, "gameplay");
+        cardPanel.add(pacmanSkinUI, "PacmanSkin");
         cardPanel.add(winUI, "Win");
         add(cardPanel);
         pack();
 
+        // tap to start game
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    Point p = e.getPoint();
+                    SwingUtilities.convertPointToScreen(p, getContentPane());
+                    SwingUtilities.convertPointFromScreen(p, btnStart);
+                    cardLayout.show(cardPanel, "PacmanSkin");
+                    if (btnStart.contains(p)) {
+                        btnStart.doClick();
+
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -204,7 +233,7 @@ public class PacManUI extends JFrame implements ActionListener {
         backgroundPanel.add(gameOverLabel, BorderLayout.NORTH);
         backgroundPanel.add(southPanel, BorderLayout.SOUTH);
         backgroundPanel.add(scoreLabel, BorderLayout.CENTER);
-        gameOverDialog.setSize(300, 200);
+        gameOverDialog.setSize(350, 250);
         gameOverDialog.setLocationRelativeTo(this);
 
         return gameOverDialog;
@@ -231,11 +260,15 @@ public class PacManUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnStart) {
+        if (e.getSource() == btnSkin) {
             cardLayout.show(cardPanel, "gameplay");
+        } else if (e.getSource() == btnBack) {
+            cardLayout.show(cardPanel, "home");
         } else if (e.getSource() == btnWin) {
             cardLayout.show(cardPanel, "home");
             game.setWin(false);
+            game.reStart();
         }
     }
+
 }

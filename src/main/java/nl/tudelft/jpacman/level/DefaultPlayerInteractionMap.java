@@ -26,7 +26,7 @@ public class DefaultPlayerInteractionMap implements CollisionMap {
      * point calculator about points to be added.
      *
      * @param pointCalculator
-     *             Strategy for calculating points.
+     *                        Strategy for calculating points.
      */
     public DefaultPlayerInteractionMap(PointCalculator pointCalculator) {
         this.pointCalculator = pointCalculator;
@@ -47,17 +47,17 @@ public class DefaultPlayerInteractionMap implements CollisionMap {
         CollisionInteractionMap collisionMap = new CollisionInteractionMap();
 
         collisionMap.onCollision(Player.class, Ghost.class,
-            (player, ghost) -> {
-                pointCalculator.collidedWithAGhost(player, ghost);
-                player.setAlive(false);
-                player.setKiller(ghost);
-            });
+                (player, ghost) -> {
+                    pointCalculator.collidedWithAGhost(player, ghost);
+                    player.setAlive(false);
+                    player.setKiller(ghost);
+                });
 
         collisionMap.onCollision(Player.class, Pellet.class,
-            (player, pellet) -> {
-                pointCalculator.consumedAPellet(player, pellet);
-                pellet.leaveSquare();
-            });
+                (player, pellet) -> {
+                    pointCalculator.consumedAPellet(player, pellet);
+                    pellet.leaveSquare();
+                });
         return collisionMap;
     }
 }

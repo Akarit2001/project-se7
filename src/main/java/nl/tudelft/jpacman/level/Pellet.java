@@ -6,7 +6,7 @@ import nl.tudelft.jpacman.sprite.Sprite;
 /**
  * A pellet, one of the little dots Pac-Man has to collect.
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  */
 public class Pellet extends Unit {
 
@@ -22,6 +22,7 @@ public class Pellet extends Unit {
 
     /**
      * Creates a new pellet.
+     * 
      * @param points The point value of this pellet.
      * @param sprite The sprite of this pellet.
      */
@@ -32,6 +33,7 @@ public class Pellet extends Unit {
 
     /**
      * Returns the point value of this pellet.
+     * 
      * @return The point value of this pellet.
      */
     public int getValue() {
