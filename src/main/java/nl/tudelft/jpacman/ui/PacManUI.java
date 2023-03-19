@@ -129,7 +129,7 @@ public class PacManUI extends JFrame implements ActionListener {
         GamePlay.add(boardPanel, BorderLayout.CENTER);
 
         // set theme
-        boardPanel.setBackground("src\\main\\resources\\space.png");
+        boardPanel.setBackground("src\\main\\resources\\sprite\\chis.png");
 
         btnWin.addActionListener(this);
         btnSkin.addActionListener(this);
