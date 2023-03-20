@@ -41,7 +41,7 @@ public class ThemesUI extends JPanel {
 
         ImageIcon icon = imageBg.get(indexOfTheme);
         imageLabel = new JLabel(icon);
-        imageLabel.setPreferredSize(new Dimension(280, 280));
+        imageLabel.setPreferredSize(new Dimension(420, 280));
 
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.BLACK);
@@ -74,7 +74,7 @@ public class ThemesUI extends JPanel {
         this.add(prevButton, c);
 
         c.anchor = GridBagConstraints.LINE_END;
-        c.insets = new Insets(-50, 0, 100, 100);
+        c.insets = new Insets(-50, 10, 100, 100);
         icon1 = new ImageIcon("src\\main\\resources\\Rselect.png");
         scaledImage = icon1.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);
         scaledIcon = new ImageIcon(scaledImage);
@@ -86,6 +86,8 @@ public class ThemesUI extends JPanel {
 
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(-50, 0, 100, 0);
+        imageLabel.setBorder(null);
+        imageLabel.setBorder(BorderFactory.createMatteBorder(5, 15, 5, 15, Color.YELLOW));
         this.add(imageLabel, c);
 
         c.anchor = GridBagConstraints.LAST_LINE_START;
@@ -159,7 +161,7 @@ public class ThemesUI extends JPanel {
     private ImageIcon createNewImageResizer(int themIndex) {
         ImageIcon originalImageIcon = new ImageIcon(
                 "src\\main\\resources\\sprite\\themes\\" + themString[themIndex] + "\\board.png");
-        Image scaledImage = originalImageIcon.getImage().getScaledInstance(280, 280, Image.SCALE_SMOOTH);
+        Image scaledImage = originalImageIcon.getImage().getScaledInstance(420, 280, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }
 }

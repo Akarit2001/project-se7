@@ -101,6 +101,9 @@ public class PacmanSkinUI extends JPanel {
         leftButton.setIcon(scaledIcon1);
 
         // add skin label
+        skinLabel.setBorder(null);
+        skinLabel.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.YELLOW));
+
         centerPanel.add(skinLabel);
 
         // add right button
@@ -129,7 +132,7 @@ public class PacmanSkinUI extends JPanel {
         titlePanelConstraints.insets = new Insets(20, 0, 0, 0);
         titlePanelConstraints.anchor = GridBagConstraints.CENTER;
 
-        JLabel titleLabel = new JLabel("Choose Skins");
+        JLabel titleLabel = new JLabel("Select Skin");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.YELLOW);
         titlePanel.add(titleLabel);
