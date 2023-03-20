@@ -2,39 +2,36 @@ JPacman Scenarios
 =================
 
 Arie van Deursen, Delft University of Technology.
-
-
-## 1. Background
-
-This document describes a series of JPacman user scenarios, following the format of [behavior-driven development](http://dannorth.net/whats-in-a-story/).
+1. Background
+This document describes a series of JPacman user scenarios, following the format of behavior-driven development.
 
 Thus, each scenario is of the form:
 
----
- **Title** _one line describing the story_
+Title one line describing the story
 
-**Narrative**
+Narrative
 
-    As a [role]
-     I want [feature]
-    So that [benefit]
+As a [role]
+ I want [feature]
+So that [benefit]
+Acceptance Criteria, presented as scenarios of the form:
 
-**Acceptance Criteria,** _presented as scenarios of the form:_
-
-    Scenario 1: Title
-    Given [context]
-     and  [some more context]...
-    When  [event] 
-    Then  [outcome]
-     and  [another outcome]...
-----
-
+Scenario 1: Title
+Given [context]
+ and  [some more context]...
+When  [event] 
+Then  [outcome]
+ and  [another outcome]...
 
 ## 2. JPacman Overview
+JPacman is a very simple JPacman derivative, to be used for educational purposes. Essential features such as multiple levels and multiple players, energizers and different ghost types are postponed for later releases (and may be implemented by students as an exercise). Furthermore, to give the game a somewhat different flavor, JPacman deviates from standard Pacman behavior in several ways. This document describes the requirements as a series of use cases, and explains what the GUI should look like.
 
-JPacman is a very simple JPacman derivative, to be used for educational purposes. Essential features such as multiple levels and multiple players, energizers and different ghost types are postponed for later releases (and may be implemented by students as an exercise).  Furthermore, to give the game a somewhat different flavor, JPacman deviates from standard Pacman behavior in several ways.  This document describes the requirements as a series of use cases, and explains what the GUI should look like.
+The JPacman game is played on a rectangular board. A square on the board can be empty, or can contain the Pacman itself, one of the several ghosts, a pellet (worth 10 points), or a wall. Moveable characters such as the Pacman and the ghosts can make single-step horizontal or vertical moves. Tunnels on the border make it possible to move from one border to the opposite border. When the Pacman moves over a square containing a pellet, the player earns points and the pellet disappears. If a player and a ghost meet at the same square, the the game is over. The player wins the game once he or she has eaten all pellets.
 
-The JPacman game is played on a rectangular board.  A square on the board can be empty, or can contain the Pacman itself, one of the several ghosts, a pellet (worth 10 points), or a wall. Moveable characters such as the Pacman and the ghosts can make single-step horizontal or vertical moves.  Tunnels on the border make it possible to move from one border to the opposite border.  When the Pacman moves over a square containing a pellet, the player earns points and the pellet disappears. If a player and a ghost meet at the same square, the the game is over. The player wins the game once he or she has eaten all pellets.
+เกม JPacman เล่นบนกระดานสีเหลี่ยม ประกอบไปด้วยตัวหน้า Home ที่มีปุ่ม TAP THE SCREEN TO START  เพื่อกดไปหน้าเลือกสกิลตัวละคร ผู้เล่นสามารถกดปุ่มเพื่อเลือกสกิลตัวละครที่ต้องการเล่น กด SELECT เพื่อไปยังหน้าเลือกธีม เเละกด BACK เมื่อต้องการกลับไปยังหน้า HOME ภายในหน้าเลือกธีม ผู้เล่นสามารถเลือกธีมที่ต้องการเล่น เมื่อเลือกเเล้วให้กด SELECT เพื่อไปยังหน้าเล่นเกม หรือกด BACK เพื่อกับไปเปลี่ยนสกิลตัวละคร 
+
+ภายในหน้าเล่นเกม  JPacman จะประกอบไปด้วย Pacman ผี ตัวPallet(มีค่า 10 คะแนน) หรือกำแพง มีตัวละครที่มีการเครื่องไหวเช่นPacman และผี ซึ่งสามารถเคลื่อนที่ในแนวนอนหรือแนวตั้ง เมื่อ Pacman เคลื่อนที่ผ่านช่องสีเหลี่ยมที่มี Pallet ผู้เล่นจะได้รับคะแนนเเละตัว Pallet จะหายไป หากผู้เล่นเดินชนผีหรือโดนผีชน เกมจะจบลง ผู้เล่นจะแพ้ทันที ผู้เล่นจะชนะเกมได้ก็ต่อเมื่อกินPalletจนหมด
+
 
 
 ## 3. User Stories
@@ -94,6 +91,8 @@ Then  I win the game.
 ```
 
 
+
+
 #### Story 3: Move The Ghost
 ```
 As a ghost;
@@ -145,20 +144,23 @@ When  the player hits the "Start" button;
 Then  the game is resumed.
 ```
 
-## 3. User Interface
 
-The user interface for JPacman is relatively simple.  The game is
-rectangular board, which can be read from a special text file with
-simple character encoding. On the GUI, special (animated) images or
-colored squares are used for the ghost, food, empty cells, and wall
-cells on the board.  The direction of the last (attempted) move is
-reflected in the image used for the player. The GUI furthermore
-contains a "Start", and "Stop" button (at the bottom of the
-GUI), as well as an indicator for the amount of food eaten and the
-game's overall state (playing, game won, player died, ready to start
-the play). 
+## 4. User Interface
+The user interface for JPacman is relatively simple. The game is rectangular board, which can be read from a special text file with simple character encoding. On the GUI, special (animated) images or colored squares are used for the ghost, food, empty cells, and wall cells on the board. The direction of the last (attempted) move is reflected in the image used for the player. The GUI furthermore contains a "Start", and "Stop" button (at the bottom of the GUI), as well as an indicator for the amount of food eaten and the game's overall state (playing, game won, player died, ready to start the play).
 
-## 4. Development Requirements
+เมื่อกดเกม JPacman ผู้เล่นจะเจอกับหน้า Home ซึ่งจะมีปุ่ม TAP THE SCREEN TO START กดไปยังหน้าเลือกสกิลตัวละคร ภายในหน้าสกิลตัวละครผู้เล่นจะพบ สกิลต่างๆ เช่น Pacman Buble Santy Mulan Tom Dropy Chloe ให้เลือกเล่น เมื่อผู้เล่นกดปุ่ม BACK จะกลับไปยังหน้า Home เเต่ถ้าหากกดSELECT จะพาผู้เล่นไปยังหน้าเลือกธีม ภายในหน้าเลือกธีมผู้เล่นจะพบกับธีมทั้งหมด 5 ธีม ได้เเก่ Valentine China Christmas Halloween Songkran เมื่อเลือกธีมได้เเล้วให้กด SELECT เพื่อไปยังหน้าเล่นเกม หากผู้เล่นต้องการกับไปเลือกสกิลตัวละครให้กด BACK 
+หน้าเล่นเกม  ผู้เล่นจะเจอกับปุ่มเริ่มเกมเพื่อเล่นเกม ปุ่มStopgเพื่อหยุดเกม เเละธีมที่ตนเองเลือกในหน้า Selext Theme
+    -ธีม Valentine ผู้เล่นจะพบกับพื้นหลัง กำแพง ผี(หัวใจ) Pallet(ช็อคโกเเลต) ที่เกี่ยวกับวันวาเลนไทน์
+    -ธีม China ผู้เล่นจะพบกับพื้นหลัง กำแพง ผี(มังกร) Pallet(ซาลาเปา) ที่เกี่ยวกับวันตรุษจีน
+    -ธีม Christmas ผู้เล่นจะพบกับพื้นหลัง กำแพง ผี(กวาง) Pallet(กล่องของขวัญ) ที่เกี่ยวกับวันคริสต์มาส
+    -ธีม Halloween ผู้เล่นจะพบกับพื้นหลัง กำแพง ผี(หน้าฮาโลวีน) Pallet(เทียน) ที่เกี่ยวกับวันฮาโลวีน
+    -ธีม Songkran ผู้เล่นจะพบกับพื้นหลัง กำแพง ผี(หน้าผียิ้ม) Pallet(ขันน้ำ) ที่เกี่ยวกับวันฮาโลวีน
+เมื่อกดเริ่มเล่นผู้เล่นต้องกิน Pallet ให้หมดเมื่อหมดจะเเสดงหน้า CHAMPION เเต่ถ้าหากโดนผีชนผู้เล่นจะแพ้ เเละมี Popup เเสดงคะเเนนของผู้เล่น พร้อมปุ่ม Restart เพื่อกดเล่นอีกครั้ง กับปุ่ม Home เพื่อกับไปยังหน้า Home
+   
+
+
+
+## 5. Development Requirements
 
 JPacman should be developed in Java. It should be set up so that it
 can easily be used by (the latest versions of) standard (open source) Java development tools, such as maven, JUnit, Eclipse/IntelliJ, cobertura, etc. To allow for working with maven, the maven standard directory structure should be used.  Since the educational purposes include testing, JPacman should be delivered with an extensive test suite.
