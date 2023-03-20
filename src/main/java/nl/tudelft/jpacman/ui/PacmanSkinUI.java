@@ -21,7 +21,9 @@ public class PacmanSkinUI extends JPanel {
     private SkinChangeListener skinChangeListener;
     private final ImageIcon[] skinImages = new ImageIcon[] {
             new ImageIcon("src\\main\\resources\\PacmanSkin\\pacman1.png"),
-            new ImageIcon("src\\main\\resources\\PacmanSkin\\pacman2.png"),
+            new ImageIcon("src\\main\\resources\\PacmanSkin\\cat.png"),
+            new ImageIcon("src\\main\\resources\\PacmanSkin\\buble.png"),
+            new ImageIcon("src\\main\\resources\\PacmanSkin\\dropy.png"),
             new ImageIcon("src\\main\\resources\\PacmanSkin\\pacman3.png"),
             new ImageIcon("src\\main\\resources\\PacmanSkin\\pacman4.png"),
             new ImageIcon("src\\main\\resources\\PacmanSkin\\pacman5.png")
@@ -30,14 +32,18 @@ public class PacmanSkinUI extends JPanel {
 
     private final String[] skinNames = new String[] {
             "Pacman",
-            "Zoey",
+            "Tom",
+            "Buble",
+            "Dropy",
             "Santy",
             "Chloe",
             "Mulan"
     };
     private final String[] pathSkin = new String[] {
             new String("/sprite/pacman.png"),
-            new String("/sprite/pacman6.png"),
+            new String("/sprite/catskin.png"),
+            new String("/sprite/bubleskin.png"),
+            new String("/sprite/dropyskin.png"),
             new String("/sprite/pacman3.png"),
             new String("/sprite/pacman4.png"),
             new String("/sprite/pacman5.png")

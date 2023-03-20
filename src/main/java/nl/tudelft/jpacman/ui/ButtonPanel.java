@@ -1,5 +1,6 @@
 package nl.tudelft.jpacman.ui;
 
+import java.awt.Color;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -28,7 +29,6 @@ class ButtonPanel extends JPanel {
         super();
         assert buttons != null;
         assert parent != null;
-
         for (final String caption : buttons.keySet()) {
             JButton button = new JButton(caption);
             button.addActionListener(e -> {

@@ -86,6 +86,7 @@ public class PacManUI extends JFrame implements ActionListener {
     JButton btnSkin = new JButton("select");
     JButton btnBack = new JButton("back");
     JButton restartButton = new JButton("restart");
+    JButton btnrestart = new JButton();
     JButton homeButton = new JButton("home");
     JButton btnStart = new JButton("Start");
 
@@ -118,7 +119,7 @@ public class PacManUI extends JFrame implements ActionListener {
 
         themesUI = new ThemesUI(this, game);
         // set size JFrame
-        setMinimumSize(new Dimension(600, 400));
+        setMinimumSize(new Dimension(800, 600));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // addCard Layout to Card Panel
@@ -147,8 +148,9 @@ public class PacManUI extends JFrame implements ActionListener {
         btnWin.addActionListener(this);
         btnSkin.addActionListener(this);
         btnBack.addActionListener(this);
+        btnrestart.addActionListener(this);
 
-        winUI.addButton(btnWin);
+        winUI.addButton(btnWin, btnrestart);
         pacmanSkinUI.addButton(btnSkin, btnBack);
         btnStart.addActionListener(this);
 
@@ -161,7 +163,7 @@ public class PacManUI extends JFrame implements ActionListener {
         pack();
 
         // tap to start game
-        addMouseListener(new MouseAdapter() {
+        homeUI.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
@@ -207,13 +209,24 @@ public class PacManUI extends JFrame implements ActionListener {
     }
 
     private JDialog createGameOverDialog() {
-        JDialog gameOverDialog = new JDialog();
+        JDialog gameOverDialog = new JDialog(this, "Game Over", true);
+        gameOverDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         gameOverDialog.setLayout(new BorderLayout());
+        game.setWin(false);
+        game.reStart();
+        // add mouse listener to content pane
+        gameOverDialog.getContentPane().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                gameOverDialog.dispose();
+            }
+        });
+
         JPanel backgroundPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\space.png");
+                ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
                 Image image = imageIcon.getImage();
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
@@ -280,6 +293,10 @@ public class PacManUI extends JFrame implements ActionListener {
             cardLayout.show(cardPanel, "home");
         } else if (e.getSource() == btnWin) {
             cardLayout.show(cardPanel, "home");
+            game.setWin(false);
+            game.reStart();
+        } else if (e.getSource() == btnrestart) {
+            cardLayout.show(cardPanel, "PacmanSkin");
             game.setWin(false);
             game.reStart();
         }

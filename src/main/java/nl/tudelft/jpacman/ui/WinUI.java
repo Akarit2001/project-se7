@@ -8,37 +8,27 @@ import java.awt.*;
 
 public class WinUI extends JPanel {
 
-    // create a panel to hold the buttons
     JPanel buttonPanel = new JPanel();
-    // create two buttons to switch between cards
-
-    JLabel title = new JLabel("PacMan");
     ImageIcon background;
     JPanel bgJPanel = new JPanel();
     JLabel bg = new JLabel();
 
     public WinUI() {
-        this.setBackground("src\\main\\resources\\5.png");
+        this.setBackground("src\\main\\resources\\bgwin2.gif");
 
     }
 
-    public void addButton(JButton btn) {
-        buttonPanel.add(btn);
-        ImageIcon icon = new ImageIcon("src\\main\\resources\\btnHome.png");
-
-        // Set the icon of the button
-        Image scaledImage = icon.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);
-
-        // Create a new ImageIcon with the scaled image
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-
-        // Set the icon of the button
-        btn.setIcon(scaledIcon);
-
+    public void addButton(JButton btnhome, JButton btnrestart) {
+        buttonPanel.add(btnhome);
+        buttonPanel.add(btnrestart);
         // Hide the border of the button
-        btn.setBorderPainted(false);
-        btn.setContentAreaFilled(false);
-        btn.setBackground(new java.awt.Color(255, 255, 255, 0));
+        btnhome.setBorderPainted(false);
+        btnhome.setContentAreaFilled(false);
+        btnhome.setBackground(Color.BLACK);
+
+        btnrestart.setBorderPainted(false);
+        btnrestart.setContentAreaFilled(false);
+        btnrestart.setBackground(Color.BLACK);
 
         buttonPanel.setBackground(new java.awt.Color(255, 255, 255, 0));
         this.setLayout(new GridBagLayout());
@@ -50,18 +40,38 @@ public class WinUI extends JPanel {
         c.anchor = GridBagConstraints.SOUTHEAST;
         c.weightx = 1.0;
         c.weighty = 1.0;
-        c.insets = new Insets(10, 10, 20, 20); // add 10-pixel margin
-        // Set preferred size of button
-        btn.setPreferredSize(new Dimension(120, 35));
-        this.add(buttonPanel, c);
+        c.insets = new Insets(10, 10, 20, 20);
+        btnhome.setPreferredSize(new Dimension(120, 35));
+        Dimension btnBackMinSize = new Dimension(80, 40);
+        btnhome.setMinimumSize(btnBackMinSize);
+        this.add(btnhome, c);
+        ImageIcon icon = new ImageIcon("src\\main\\resources\\btnHome.png");
+        Image scaledImage = icon.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        btnhome.setIcon(scaledIcon);
+
+        GridBagConstraints c2 = new GridBagConstraints();
+        c2.gridx = 0;
+        c2.gridy = 1;
+        c2.anchor = GridBagConstraints.SOUTHWEST;
+        c2.weightx = 1.0;
+        c2.weighty = 1.0;
+        c2.insets = new Insets(10, 20, 20, 10);
+        btnrestart.setPreferredSize(new Dimension(120, 35));
+        Dimension btnBackMinSize2 = new Dimension(80, 40);
+        btnrestart.setMinimumSize(btnBackMinSize2);
+        this.add(btnrestart, c2);
+        ImageIcon icon2 = new ImageIcon("src\\main\\resources\\btnRestart.png");
+        Image scaledImage2 = icon2.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
+        btnrestart.setIcon(scaledIcon2);
+
     }
 
-    public ImageIcon ResizeImage(ImageIcon image, int width, int hight) {
-
-        Image img = image.getImage().getScaledInstance(bg.getWidth(), bg.getHeight(), Image.SCALE_SMOOTH);
-
-        return new ImageIcon(img);
-
+    public ImageIcon resizeImageIcon(ImageIcon icon, int width, int height) {
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
     }
 
     @Override

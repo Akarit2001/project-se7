@@ -11,7 +11,7 @@ public class HomeUI extends JPanel {
     JLabel bg = new JLabel();
 
     public HomeUI() {
-        this.setBackground("src\\main\\resources\\1.png");
+        this.setBackground("src\\main\\resources\\bghome2 .gif");
 
     }
 
