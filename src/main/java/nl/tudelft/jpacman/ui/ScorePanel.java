@@ -50,6 +50,7 @@ public class ScorePanel extends JPanel {
     public ScorePanel(List<Player> players) {
         super();
         assert players != null;
+        this.setBackground(new Color(255, 255, 255, 0));
 
         setLayout(new GridLayout(2, players.size()));
 
@@ -102,5 +103,8 @@ public class ScorePanel extends JPanel {
     public void setScoreFormatter(ScoreFormatter scoreFormatter) {
         assert scoreFormatter != null;
         this.scoreFormatter = scoreFormatter;
+    }
+
+    public void setBackground(String string) {
     }
 }

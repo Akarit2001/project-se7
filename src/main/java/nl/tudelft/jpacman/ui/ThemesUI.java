@@ -11,20 +11,20 @@ public class ThemesUI extends JPanel {
     private JPanel themeItemJPanel;
     private JButton prevButton;
     private JButton nextButton;
-
+    ImageIcon background;
     private JButton confirmButton;
     private JButton backButton;
     private JLabel imageLabel;
     private JLabel ThemeNamePanel;
     // files name
-    private final String[] themString = { "Valentine", "China", "Christmas", "Halloween","Songkran"};
+    private final String[] themString = { "Valentine", "China", "Christmas", "Halloween", "Songkran" };
     private List<ImageIcon> imageBg = new ArrayList<>();
     private int indexOfTheme;
     private PacManUI pacManUI;
 
     public ThemesUI(PacManUI pacManUI, Game game) {
         this.pacManUI = pacManUI;
-        this.setBackground(getBackground());
+        this.setBackground("src\\main\\resources\\bgUi.png");
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 1;
@@ -41,7 +41,9 @@ public class ThemesUI extends JPanel {
 
         ImageIcon icon = imageBg.get(indexOfTheme);
         imageLabel = new JLabel(icon);
-        imageLabel.setPreferredSize(new Dimension(420, 280));
+        imageLabel.setBackground(new Color(0, 0, 0, 0));
+        imageLabel.setOpaque(false);
+        imageLabel.setPreferredSize(new Dimension(440, 320));
 
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.BLACK);
@@ -69,17 +71,20 @@ public class ThemesUI extends JPanel {
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         prevButton.setIcon(scaledIcon);
         prevButton.setPreferredSize(new Dimension(65, 60));
+        prevButton.setOpaque(false);
+        prevButton.setOpaque(false);
         prevButton.setBorderPainted(false);
         prevButton.setContentAreaFilled(false);
         this.add(prevButton, c);
 
         c.anchor = GridBagConstraints.LINE_END;
-        c.insets = new Insets(-50, 10, 100, 100);
+        c.insets = new Insets(-50, 20, 100, 100);
         icon1 = new ImageIcon("src\\main\\resources\\Rselect.png");
         scaledImage = icon1.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);
         scaledIcon = new ImageIcon(scaledImage);
         nextButton.setIcon(scaledIcon);
         nextButton.setPreferredSize(new Dimension(65, 60));
+        nextButton.setOpaque(false);
         nextButton.setBorderPainted(false);
         nextButton.setContentAreaFilled(false);
         this.add(nextButton, c);
@@ -87,7 +92,7 @@ public class ThemesUI extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(-50, 0, 100, 0);
         imageLabel.setBorder(null);
-        imageLabel.setBorder(BorderFactory.createMatteBorder(5, 15, 5, 15, Color.YELLOW));
+        imageLabel.setBorder(BorderFactory.createMatteBorder(5, 15, 5, 15, Color.WHITE));
         this.add(imageLabel, c);
 
         c.anchor = GridBagConstraints.LAST_LINE_START;
@@ -97,6 +102,7 @@ public class ThemesUI extends JPanel {
         scaledIcon = new ImageIcon(scaledImage);
         backButton.setIcon(scaledIcon);
         backButton.setPreferredSize(new Dimension(85, 30));
+        backButton.setOpaque(false);
         backButton.setBorderPainted(false);
         backButton.setContentAreaFilled(false);
         this.add(backButton, c);
@@ -107,7 +113,7 @@ public class ThemesUI extends JPanel {
         scaledIcon = new ImageIcon(scaledImage);
         confirmButton.setIcon(scaledIcon);
         confirmButton.setPreferredSize(new Dimension(95, 30));
-        confirmButton.setBorderPainted(false);
+        confirmButton.setOpaque(false);
         confirmButton.setBorderPainted(false);
         confirmButton.setContentAreaFilled(false);
         this.add(confirmButton, c);
@@ -117,21 +123,19 @@ public class ThemesUI extends JPanel {
         JLabel titleLabel = new JLabel("Select Theme");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.YELLOW);
-        titlePanel.setBackground(Color.BLACK);
+        titlePanel.setBackground(new Color(0, 0, 0, 0));
         titlePanel.add(titleLabel);
         c.gridx = 1;
         c.gridy = 0;
         c.anchor = GridBagConstraints.PAGE_START;
-        c.insets = new Insets(20, 0, 0, 0);
+        c.insets = new Insets(30, 0, 0, 0);
         this.add(titlePanel, c);
         setVisible(true);
 
         c.gridx = 1;
         c.gridy = 0;
         c.anchor = GridBagConstraints.CENTER;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.insets = new Insets(20, 0, 0, 0);
+        c.insets = new Insets(30, 0, 0, 0);
         ThemeNamePanel = new JLabel(themString[indexOfTheme]);
         ThemeNamePanel.setFont(new Font("Arial", Font.BOLD, 20));
         ThemeNamePanel.setForeground(Color.YELLOW);
@@ -161,7 +165,26 @@ public class ThemesUI extends JPanel {
     private ImageIcon createNewImageResizer(int themIndex) {
         ImageIcon originalImageIcon = new ImageIcon(
                 "src\\main\\resources\\sprite\\themes\\" + themString[themIndex] + "\\board.png");
-        Image scaledImage = originalImageIcon.getImage().getScaledInstance(420, 280, Image.SCALE_SMOOTH);
+        Image scaledImage = originalImageIcon.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
+    }
+
+    public ImageIcon resizeImageIcon(ImageIcon icon, int width, int height) {
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        // Call the super method
+        super.paintComponent(g);
+        // Draw the image icon on the panel
+        g.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
+    }
+
+    public void setBackground(String path) {
+        background = new ImageIcon(path);
+
     }
 }

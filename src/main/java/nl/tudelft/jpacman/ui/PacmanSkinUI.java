@@ -1,10 +1,8 @@
 package nl.tudelft.jpacman.ui;
 
 import javax.swing.*;
-
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.sprite.PacManSprites;
-
 import java.awt.*;
 
 //Merge my code with the previous one.
@@ -14,7 +12,6 @@ public class PacmanSkinUI extends JPanel {
     // create two buttons to switch between cards
 
     ImageIcon background;
-    JPanel bgJPanel = new JPanel();
     JLabel bg = new JLabel();
 
     private JButton selectButton;
@@ -57,13 +54,14 @@ public class PacmanSkinUI extends JPanel {
     private final Game game;
 
     public PacmanSkinUI(PacManSprites pacmanSprites, Game game) {
-        this.setBackground("src\\main\\resources\\bgSkinUI.png");
+        this.setBackground("src\\main\\resources\\bgUi.png");
         this.game = game;
         setLayout(new BorderLayout());
 
         // create a new panel with GridBagLayout
         JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(Color.BLACK);
+        mainPanel.setOpaque(false);
+        mainPanel.setBackground(new Color(0, 0, 0, 0));
         // create constraints for the centerPanel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -75,7 +73,7 @@ public class PacmanSkinUI extends JPanel {
 
         // create the centerPanel
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setBackground(new java.awt.Color(3, 3, 3));
+
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 1;
@@ -85,37 +83,47 @@ public class PacmanSkinUI extends JPanel {
         c.insets = new Insets(10, 10, 0, 10);
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
 
+        centerPanel.setBackground(Color.BLACK);
+
         // add left button
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        leftPanel.setBackground(new Color(0, 0, 0, 0));
+        leftPanel.setOpaque(false);
         leftPanel.setBorder(BorderFactory.createEmptyBorder(100, 10, 0, 20));
-        leftPanel.setBackground(Color.BLACK);
         leftPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         leftButton.setHorizontalAlignment(SwingConstants.CENTER);
         leftPanel.add(leftButton);
         centerPanel.add(leftPanel);
         leftButton.setBorderPainted(false);
         leftButton.setContentAreaFilled(false);
+
         ImageIcon icon1 = new ImageIcon("src\\main\\resources\\Lselect.png");
         Image scaledImage1 = icon1.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
         leftButton.setIcon(scaledIcon1);
 
         // add skin label
+
         skinLabel.setBorder(null);
-        skinLabel.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.YELLOW));
+        skinLabel.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.WHITE));
+        skinLabel.setOpaque(false);
+        skinLabel.setBackground(new Color(0, 0, 0, 0));
 
         centerPanel.add(skinLabel);
 
         // add right button
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        rightPanel.setBorder(null);
         rightPanel.setBorder(BorderFactory.createEmptyBorder(100, 20, 0, 10));
-        rightPanel.setBackground(Color.BLACK);
         rightPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightButton.setHorizontalAlignment(SwingConstants.CENTER);
         rightPanel.add(rightButton);
         centerPanel.add(rightPanel);
+        rightPanel.setBackground(new Color(0, 0, 0, 0));
+        rightPanel.setOpaque(false);
         rightButton.setBorderPainted(false);
         rightButton.setContentAreaFilled(false);
+
         ImageIcon icon2 = new ImageIcon("src\\main\\resources\\Rselect.png");
         Image scaledImage2 = icon2.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
@@ -123,7 +131,8 @@ public class PacmanSkinUI extends JPanel {
 
         // create a new panel with FlowLayout
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titlePanel.setBackground(Color.BLACK);
+        titlePanel.setBackground(new Color(0, 0, 0, 0));
+        titlePanel.setOpaque(false);
 
         // create the title label
         GridBagConstraints titlePanelConstraints = new GridBagConstraints();
@@ -145,21 +154,22 @@ public class PacmanSkinUI extends JPanel {
         mainPanel.add(titlePanel, titlePanelConstraints);
 
         // add skin name
-        GridBagConstraints skinNamePanelConstraints = new GridBagConstraints();
-        skinNamePanelConstraints.gridx = 1;
-        skinNamePanelConstraints.gridy = 2;
-        skinNamePanelConstraints.insets = new Insets(20, 0, 0, 0);
-        skinNamePanelConstraints.anchor = GridBagConstraints.CENTER;
+        GridBagConstraints sc = new GridBagConstraints();
+        sc.gridx = 1;
+        sc.gridy = 2;
+        sc.insets = new Insets(20, 0, 0, 0);
+        sc.anchor = GridBagConstraints.CENTER;
 
         // create the skinNamePanel
         JPanel skinNamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        skinNamePanel.setBackground(Color.BLACK);
+        skinNamePanel.setBackground(new Color(0, 0, 0, 0));
+        skinNamePanel.setOpaque(false);
         skinNameLabel.setFont(new Font("Arial", Font.BOLD, 20));
         skinNameLabel.setForeground(Color.YELLOW);
         skinNamePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         skinNamePanel.add(skinNameLabel);
 
-        mainPanel.add(skinNamePanel, skinNamePanelConstraints);
+        mainPanel.add(skinNamePanel, sc);
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.add(centerPanel, BorderLayout.CENTER);
@@ -167,7 +177,6 @@ public class PacmanSkinUI extends JPanel {
         // add the buttonPanel to the center of the mainPanel
         mainPanel.add(buttonPanel, gbc);
         add(mainPanel, BorderLayout.CENTER);
-
         leftButton.addActionListener(e -> changeSkin(-1));
         rightButton.addActionListener(e -> changeSkin(1));
         setButtonDimensions(leftButton, 50, 70);
