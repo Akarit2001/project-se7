@@ -17,7 +17,7 @@ public class ThemesUI extends JPanel {
     private JLabel imageLabel;
     private JLabel ThemeNamePanel;
     // files name
-    private final String[] themString = { "Valentine", "China", "Christmas" };
+    private final String[] themString = { "Valentine", "China", "Christmas", "Halloween"};
     private List<ImageIcon> imageBg = new ArrayList<>();
     private int indexOfTheme;
     private PacManUI pacManUI;
