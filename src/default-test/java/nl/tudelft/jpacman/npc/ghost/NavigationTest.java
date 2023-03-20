@@ -12,6 +12,7 @@ import nl.tudelft.jpacman.level.Pellet;
 import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.points.PointCalculator;
 import nl.tudelft.jpacman.sprite.PacManSprites;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

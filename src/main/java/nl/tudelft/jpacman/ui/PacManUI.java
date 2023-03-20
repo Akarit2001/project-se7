@@ -91,9 +91,20 @@ public class PacManUI extends JFrame implements ActionListener {
 
     WinUI winUI = new WinUI();
     HomeUI homeUI = new HomeUI();
+    ThemesUI themesUI;
 
     PacManSprites pacmanSprites;
     PacmanSkinUI pacmanSkinUI;
+    private String theme;
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+        boardPanel.setBackground("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
+    }
 
     public PacManUI(Game game, final Map<String, Action> buttons,
             final Map<Integer, Action> keyMappings,
@@ -103,7 +114,9 @@ public class PacManUI extends JFrame implements ActionListener {
         assert buttons != null;
         assert keyMappings != null;
         this.game = game;
+        this.theme = "valentine";
 
+        themesUI = new ThemesUI(this, game);
         // set size JFrame
         setMinimumSize(new Dimension(600, 400));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -129,7 +142,7 @@ public class PacManUI extends JFrame implements ActionListener {
         GamePlay.add(boardPanel, BorderLayout.CENTER);
 
         // set theme
-        boardPanel.setBackground("src\\main\\resources\\sprite\\chis.png");
+        boardPanel.setBackground("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
 
         btnWin.addActionListener(this);
         btnSkin.addActionListener(this);
@@ -143,6 +156,7 @@ public class PacManUI extends JFrame implements ActionListener {
         cardPanel.add(GamePlay, "gameplay");
         cardPanel.add(pacmanSkinUI, "PacmanSkin");
         cardPanel.add(winUI, "Win");
+        cardPanel.add(themesUI, "themes");
         add(cardPanel);
         pack();
 
@@ -261,7 +275,7 @@ public class PacManUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSkin) {
-            cardLayout.show(cardPanel, "gameplay");
+            cardLayout.show(cardPanel, "themes");
         } else if (e.getSource() == btnBack) {
             cardLayout.show(cardPanel, "home");
         } else if (e.getSource() == btnWin) {
@@ -269,6 +283,14 @@ public class PacManUI extends JFrame implements ActionListener {
             game.setWin(false);
             game.reStart();
         }
+    }
+
+    public void setGameStart() {
+        cardLayout.show(cardPanel, "gameplay");
+    }
+
+    public void pageSkins() {
+        cardLayout.show(cardPanel, "PacmanSkin");
     }
 
 }

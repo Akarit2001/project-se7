@@ -30,13 +30,17 @@ import nl.tudelft.jpacman.ui.PacManUiBuilder;
 @SuppressWarnings("PMD.TooManyMethods")
 public class Launcher {
 
-    private static final PacManSprites SPRITE_STORE = new PacManSprites();
+    private PacManSprites spriteStore;
 
     public static final String DEFAULT_MAP = "/board0.txt";
     private List<String> allLevel = Arrays.asList("/board0.txt");
 
     private PacManUI pacManUI;
     private Game game;
+
+    public Launcher() {
+        this.spriteStore = new PacManSprites();
+    }
 
     /**
      * @return The game object this launcher will start when {@link #launch()}
@@ -103,7 +107,7 @@ public class Launcher {
      * @return A new map parser object using the factories from
      *         {@link #getLevelFactory()} and {@link #getBoardFactory()}.
      */
-    protected MapParser getMapParser() {
+    public MapParser getMapParser() {
         return new MapParser(getLevelFactory(), getBoardFactory());
     }
 
@@ -119,28 +123,28 @@ public class Launcher {
      * @return The default {@link PacManSprites}.
      */
     protected PacManSprites getSpriteStore() {
-        return SPRITE_STORE;
+        return spriteStore;
     }
 
     /**
      * @return A new factory using the sprites from {@link #getSpriteStore()}
      *         and the ghosts from {@link #getGhostFactory()}.
      */
-    protected LevelFactory getLevelFactory() {
+    public LevelFactory getLevelFactory() {
         return new LevelFactory(getSpriteStore(), getGhostFactory(), loadPointCalculator());
     }
 
     /**
      * @return A new factory using the sprites from {@link #getSpriteStore()}.
      */
-    protected GhostFactory getGhostFactory() {
+    public GhostFactory getGhostFactory() {
         return new GhostFactory(getSpriteStore());
     }
 
     /**
      * @return A new factory using the players from {@link #getPlayerFactory()}.
      */
-    protected GameFactory getGameFactory() {
+    public GameFactory getGameFactory() {
         return new GameFactory(getPlayerFactory());
     }
 

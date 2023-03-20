@@ -8,6 +8,11 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import nl.tudelft.jpacman.sprite.AnimatedSprite;
+import nl.tudelft.jpacman.sprite.EmptySprite;
+import nl.tudelft.jpacman.sprite.Sprite;
+import nl.tudelft.jpacman.sprite.SpriteStore;
+
 /**
  * Verifies the loading of sprites.
  *

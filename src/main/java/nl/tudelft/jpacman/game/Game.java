@@ -101,6 +101,8 @@ public abstract class Game implements LevelObserver {
 
     public abstract void setSkin(String skin);
 
+    public abstract void changeBoard(String theme);
+
     /**
      * Moves the specified player one square in the given direction.
      *

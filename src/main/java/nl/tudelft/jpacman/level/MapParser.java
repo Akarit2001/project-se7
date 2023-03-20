@@ -12,6 +12,7 @@ import nl.tudelft.jpacman.board.Board;
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.sprite.PacManSprites;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
@@ -259,4 +260,8 @@ public class MapParser {
     protected BoardFactory getBoardCreator() {
         return boardCreator;
     }
+
+    // public void setSprites(PacManSprites sp) {
+    //     this.
+    // }
 }

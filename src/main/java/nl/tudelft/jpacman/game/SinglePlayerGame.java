@@ -1,14 +1,24 @@
 package nl.tudelft.jpacman.game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.Luminance;
+
 import nl.tudelft.jpacman.Launcher;
+import nl.tudelft.jpacman.PacmanConfigurationException;
+import nl.tudelft.jpacman.board.BoardFactory;
+import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.level.Level;
+import nl.tudelft.jpacman.level.LevelFactory;
+import nl.tudelft.jpacman.level.MapParser;
 import nl.tudelft.jpacman.level.Player;
+import nl.tudelft.jpacman.npc.ghost.GhostFactory;
 
 import com.google.common.collect.ImmutableList;
 import nl.tudelft.jpacman.points.PointCalculator;
+import nl.tudelft.jpacman.points.PointCalculatorLoader;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 
 /**
@@ -30,7 +40,7 @@ public class SinglePlayerGame extends Game {
 
     private Level level;
     private int MAP_NUMBER = 0;
-    private Launcher launcher = new Launcher();
+    private String theme;
 
     /**
      * Create a new single player game for the provided level and player.
@@ -113,7 +123,7 @@ public class SinglePlayerGame extends Game {
     }
 
     public void reSetLevel() {
-        listlevel = launcher.makeLevel();
+        listlevel.set(0, createNewlevel(theme));
     }
 
     @Override
@@ -126,4 +136,28 @@ public class SinglePlayerGame extends Game {
         player.setSprites(sprites.getPacmanSprites());
     }
 
+    @Override
+    public void changeBoard(String theme) {
+        this.theme = theme;
+        this.level.removeObserver(this);
+        this.level = createNewlevel(theme);
+        this.level.registerPlayer(this.player); 
+    }
+    public Level createNewlevel(String theme){
+        try {
+            PacManSprites pacManSprites = new PacManSprites();
+            pacManSprites.setTheme(theme);
+            BoardFactory boardFactory = new BoardFactory(pacManSprites);
+            LevelFactory levelFactory = new LevelFactory(pacManSprites, new GhostFactory(pacManSprites),
+                    new PointCalculatorLoader().load());
+            MapParser mapParser = new MapParser(levelFactory, boardFactory);
+            return mapParser.parseMap("/board0.txt");
+        } catch (IOException e) {
+            throw new PacmanConfigurationException(
+                    "Unable to create level, name = ", e);
+        }
+    }
+
 }
+
+

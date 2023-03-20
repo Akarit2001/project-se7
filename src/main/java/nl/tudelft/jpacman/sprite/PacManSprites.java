@@ -55,6 +55,20 @@ public class PacManSprites extends SpriteStore {
     // default skin
     private String pacmanSkin = "/sprite/pacman1.png";
 
+    private String wall;
+    private String pellet;
+    private String theme;
+    private String ghost;
+
+    // folder theme name
+    public PacManSprites() {
+        this.theme = "valentine";
+        // project-soften/src/main/resources/themes/china/wall.png
+        this.wall = "/sprite/themes/" + theme + "/wall.png";
+        this.pellet = "/sprite/themes/" + theme + "/pellet.png";
+        this.ghost = "/sprite/themes/" + theme + "/";
+    }
+
     /**
      * @return A map of animated Pac-Man sprites for all directions.
      */
@@ -118,8 +132,8 @@ public class PacManSprites extends SpriteStore {
      */
     public Map<Direction, Sprite> getGhostSprite(GhostColor color) {
         assert color != null;
-
-        String resource = "/sprite/ghost_" + color.name().toLowerCase()
+        // src\\main\\resources\\themes\\valentine
+        String resource = ghost+"/ghost_" + color.name().toLowerCase()
                 + ".png";
         return directionSprite(resource, GHOST_ANIMATION_FRAMES);
     }
@@ -128,7 +142,7 @@ public class PacManSprites extends SpriteStore {
      * @return The sprite for the wall.
      */
     public Sprite getWallSprite() {
-        return loadSprite("/sprite/chisk.png");
+        return loadSprite(wall);
     }
 
     /**
@@ -142,7 +156,7 @@ public class PacManSprites extends SpriteStore {
      * @return The sprite for the
      */
     public Sprite getPelletSprite() {
-        return loadSprite("/sprite/pelletchis.png");
+        return loadSprite(pellet);
     }
 
     /**
@@ -161,4 +175,10 @@ public class PacManSprites extends SpriteStore {
         }
     }
 
+    public void setTheme(String theme) {
+        // src\main\resources\themes\valentine\wall.png
+        this.wall = "/sprite/themes/" + theme + "/wall.png";
+        this.pellet = "/sprite/themes/" + theme + "/pellet.png";
+        this.ghost = "/sprite/themes/" + theme + "/";
+    }
 }

@@ -29,7 +29,11 @@ public class Level {
     /**
      * The board of this level.
      */
-    private final Board board;
+    private  Board board;
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 
     /**
      * The lock that ensures moves are executed sequential.
