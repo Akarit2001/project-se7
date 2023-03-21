@@ -107,7 +107,6 @@ public class PacManUI extends JFrame implements ActionListener {
     public void setTheme(String theme) {
         this.theme = theme;
         boardPanel.setBackground("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
-        scorePanel.setBackground("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
     }
 
     public PacManUI(Game game, final Map<String, Action> buttons,
@@ -214,12 +213,10 @@ public class PacManUI extends JFrame implements ActionListener {
     }
 
     private JDialog createGameOverDialog() {
-
         JDialog gameOverDialog = new JDialog(this, "Game Over", true);
-
         gameOverDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         gameOverDialog.setLayout(new BorderLayout());
-        gameOverDialog.setMinimumSize(new Dimension(400, 250));
+
         // add mouse listener to content pane
         gameOverDialog.getContentPane().addMouseListener(new MouseAdapter() {
             @Override
@@ -241,7 +238,6 @@ public class PacManUI extends JFrame implements ActionListener {
         JLabel gameOverLabel = new JLabel("You Died", SwingConstants.CENTER);
         gameOverLabel.setFont(new Font("Arial", Font.BOLD, 24));
         gameOverLabel.setForeground(Color.RED);
-        gameOverLabel.setBackground(Color.LIGHT_GRAY);
         int padding = 20;
         gameOverLabel.setBorder(BorderFactory.createEmptyBorder(padding, 0, padding, 0));
 

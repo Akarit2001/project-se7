@@ -69,6 +69,7 @@ public class PacManSprites extends SpriteStore {
         this.ghost = "/sprite/themes/" + theme + "/";
     }
 
+
     /**
      * @return A map of animated Pac-Man sprites for all directions.
      */
