@@ -100,6 +100,7 @@ public class PacManUI extends JFrame implements ActionListener {
     PacManSprites pacmanSprites;
     PacmanSkinUI pacmanSkinUI;
     private String theme;
+    PacManSoundPlayer pacManSoundPlayer;
 
     public String getTheme() {
         return theme;
@@ -171,12 +172,15 @@ public class PacManUI extends JFrame implements ActionListener {
         cardPanel.add(themesUI, "themes");
         add(cardPanel);
         pack();
+        pacManSoundPlayer = new PacManSoundPlayer();
+        pacManSoundPlayer.playBgSound();
 
         // tap to start game
         homeUI.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
+                    pacManSoundPlayer.StopBgSound();
                     Point p = e.getPoint();
                     SwingUtilities.convertPointToScreen(p, getContentPane());
                     SwingUtilities.convertPointFromScreen(p, btnStart);
@@ -294,6 +298,7 @@ public class PacManUI extends JFrame implements ActionListener {
             dialog.dispose();
             game.reStart();
             cardLayout.show(cardPanel, "home");
+            pacManSoundPlayer.playBgSound();
         });
         return homeButton;
     }
@@ -305,8 +310,10 @@ public class PacManUI extends JFrame implements ActionListener {
             cardLayout.show(cardPanel, "themes");
         } else if (e.getSource() == btnBack) {
             cardLayout.show(cardPanel, "home");
+            pacManSoundPlayer.playBgSound();
         } else if (e.getSource() == btnWin) {
             cardLayout.show(cardPanel, "home");
+            pacManSoundPlayer.playBgSound();
             game.setWin(false);
             game.reStart();
         } else if (e.getSource() == btnrestart) {
