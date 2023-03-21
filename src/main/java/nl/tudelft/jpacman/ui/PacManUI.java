@@ -84,6 +84,7 @@ public class PacManUI extends JFrame implements ActionListener {
     JPanel GamePlay = new JPanel();
     JPanel buttonPanel = new JPanel();
 
+    JButton btnstop = new JButton("Stop");
     JButton btnWin = new JButton("Home");
     JButton btnSkin = new JButton("select");
     JButton btnBack = new JButton("back");
@@ -91,7 +92,7 @@ public class PacManUI extends JFrame implements ActionListener {
     JButton btnrestart = new JButton();
     JButton homeButton = new JButton("home");
     JButton btnStart = new JButton("Start");
-
+    JButton playButton = new JButton("Tap the screen to play");
     WinUI winUI = new WinUI();
     HomeUI homeUI = new HomeUI();
     ThemesUI themesUI;
@@ -130,8 +131,6 @@ public class PacManUI extends JFrame implements ActionListener {
         PacKeyListener keys = new PacKeyListener(keyMappings);
         addKeyListener(keys);
 
-        JPanel buttonPanel = new ButtonPanel(buttons, this);
-
         scorePanel = new ScorePanel(game.getPlayers());
         if (scoreFormatter != null) {
             scorePanel.setScoreFormatter(scoreFormatter);
@@ -140,17 +139,26 @@ public class PacManUI extends JFrame implements ActionListener {
         boardPanel = new BoardPanel(game);
         GamePlay.setLayout(new BorderLayout());
         boardPanel.setOpaque(false);
-        GamePlay.add(buttonPanel, BorderLayout.SOUTH);
         GamePlay.add(scorePanel, BorderLayout.NORTH);
         GamePlay.add(boardPanel, BorderLayout.CENTER);
 
         // set theme
         boardPanel.setBackground("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
 
+        // btnstop.setIcon(new
+        // ImageIcon("src\\main\\resources\\btnRestart.png"));
+        // btnstop.setOpaque(false);
+        // btnstop.setBorderPainted(false);
+        // btnstop.setFocusPainted(false);
+        // btnstop.setContentAreaFilled(false);
+
         btnWin.addActionListener(this);
         btnSkin.addActionListener(this);
         btnBack.addActionListener(this);
         btnrestart.addActionListener(this);
+        btnstop.addActionListener(this);
+
+        scorePanel.addPauseButton(btnstop);
 
         winUI.addButton(btnWin, btnrestart);
         pacmanSkinUI.addButton(btnSkin, btnBack);
@@ -239,6 +247,7 @@ public class PacManUI extends JFrame implements ActionListener {
         gameOverLabel.setFont(new Font("Arial", Font.BOLD, 24));
         gameOverLabel.setForeground(Color.RED);
         int padding = 20;
+        gameOverDialog.setUndecorated(true);
         gameOverLabel.setBorder(BorderFactory.createEmptyBorder(padding, 0, padding, 0));
 
         JLabel scoreLabel = new JLabel("Your Score: " + game.getScore(), SwingConstants.CENTER);
@@ -274,6 +283,7 @@ public class PacManUI extends JFrame implements ActionListener {
         restartButton.addActionListener(e -> {
             dialog.dispose();
             game.reStart();
+            GameDialog(boardPanel);
         });
         return restartButton;
     }
@@ -303,11 +313,56 @@ public class PacManUI extends JFrame implements ActionListener {
             cardLayout.show(cardPanel, "PacmanSkin");
             game.setWin(false);
             game.reStart();
+        } else if (e.getSource() == btnstop) {
+            game.stop();
+            GameDialog(boardPanel);
         }
+
     }
 
     public void setGameStart() {
         cardLayout.show(cardPanel, "gameplay");
+        GameDialog(boardPanel);
+    }
+
+    private void GameDialog(BoardPanel boardPanel) {
+        JDialog frame = new JDialog(this, true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setMinimumSize(new Dimension(800, 580));
+        frame.setUndecorated(true);
+        frame.setBackground(new Color(100, 100, 100, 50));
+        frame.setLocationRelativeTo(boardPanel);
+        frame.requestFocusInWindow();
+        JLabel titleLabel = new JLabel("Tap the screen to play");
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(Color.YELLOW);
+        titleLabel.setBorder(null);
+
+        // Add mouse listener to the frame
+        frame.getContentPane().add(titleLabel, BorderLayout.CENTER);
+        frame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    Point p = e.getPoint();
+                    SwingUtilities.convertPointToScreen(p, getContentPane());
+                    SwingUtilities.convertPointFromScreen(p, playButton);
+
+                    frame.setVisible(false);
+                    game.start();
+                    requestFocus();
+                    frame.dispose();
+                    if (playButton.contains(p)) {
+                        playButton.doClick();
+
+                    }
+                }
+            }
+        });
+
+        frame.pack();
+        frame.setVisible(true);
     }
 
     public void pageSkins() {

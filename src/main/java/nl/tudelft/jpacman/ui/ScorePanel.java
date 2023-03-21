@@ -1,11 +1,13 @@
 package nl.tudelft.jpacman.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -50,7 +52,6 @@ public class ScorePanel extends JPanel {
     public ScorePanel(List<Player> players) {
         super();
         assert players != null;
-        this.setBackground(new Color(255, 255, 255, 0));
 
         setLayout(new GridLayout(2, players.size()));
 
@@ -106,5 +107,9 @@ public class ScorePanel extends JPanel {
     }
 
     public void setBackground(String string) {
+    }
+
+    public void addPauseButton(JButton btnstop) {
+        add(btnstop, BorderLayout.LINE_END);
     }
 }

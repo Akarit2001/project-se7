@@ -15,10 +15,6 @@ public class HomeUI extends JPanel {
 
     }
 
-    public void start() {
-        setVisible(true);
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         // Call the super method
