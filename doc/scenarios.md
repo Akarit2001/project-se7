@@ -90,9 +90,6 @@ When  I have eaten the last pellet;
 Then  I win the game.
 ```
 
-
-
-
 #### Story 3: Move The Ghost
 ```
 As a ghost;
@@ -126,26 +123,99 @@ Then  the ghost can move to the player,
  and  the game is over.
 ```
 
-#### Story 4: Suspend the Game
+#### Story 4: Select a character skill
 
 ```
 As a player,
- I want to be able to suspend the game;
-So  that I can pause and do something else.
+I want to Select a character skill ;
+In order to play various character skills.
 
-Scenario S4.1: Suspend the game.
-Given the game has started;
-When  the player clicks the "Stop" button;
-Then  all moves from ghosts and the player are suspended.
+Scenario S4.1: Select skill Pacman.
+Given on select Skin page;
+When  the player clicks the "SELECT" button;
+Then it will go to the theme selection page.
+If you press back, you will go to the start page.
 
-Scenario S4.2: Restart the game.
-Given the game is suspended;
-When  the player hits the "Start" button;
-Then  the game is resumed.
+```
+#### Story 5: Select Theme
+
+```
+As a player,
+I want to Select  Theme ;
+So that I can try different theme.
+
+Scenario S5.1: Select Valentine Theme.
+Given on Select Theme page;
+When  the player clicks the "SELECT" button;
+Then it will go to the game page in a Valentine theme.
+If you press back, you will go to the start page.
+
+Scenario S5.2: Select China Theme.
+Given on Select Theme page;
+When  the player clicks the "SELECT" button;
+Then it will go to the game page in a China theme.
+If you press back, you will go to the start page.
+
+Scenario S5.3: Select Christmas Theme.
+Given on Select Theme page;
+When  the player clicks the "SELECT" button;
+Then it will go to the game page in a Christmas theme.
+If you press back, you will go to the start page.
+
+Scenario S5.4: Select Halloween Theme.
+Given on Select Theme page;
+When  the player clicks the "SELECT" button;
+Then it will go to the game page in a Halloween theme.
+If you press back, you will go to the start page.
+
+Scenario S5.5: Select Songkran Theme.
+Given on Select Theme page;
+When  the player clicks the "SELECT" button;
+Then it will go to the game page in a Songkran theme.
+If you press back, you will go to the start page.
+
+```
+#### Story 6: Show Score
+
+```
+As a player,
+I want to see my score ;
+So that I can know current score.
+
+Scenario S6.1: During Playing.
+Given Playing game;
+When  the player look at banner;
+Then  banner is show current score.
+
+Scenario S6.2: The player dies..
+Given the player dies;
+When the game shows a pop-up saying You Died;
+It will then display the score that the player has played.
+
+```
+#### Story 7: Popup
+
+```
+As a player,
+I want to start the game or return to the home page:
+In order to start that game again.
+
+Scenario S7.1: Restart Button.
+Given Popup;
+When the player presses the restart button will come 
+back to play the game again
+
+Scenario S7.2: Home Button..
+Given Popup;
+When the player presses the Home button will return to 
+the game start page
+
+
+
+```
+## 4. User Interface
 ```
 
-
-## 4. User Interface
 The user interface for JPacman is relatively simple. The game is rectangular board, which can be read from a special text file with simple character encoding. On the GUI, special (animated) images or colored squares are used for the ghost, food, empty cells, and wall cells on the board. The direction of the last (attempted) move is reflected in the image used for the player. The GUI furthermore contains a "Start", and "Stop" button (at the bottom of the GUI), as well as an indicator for the amount of food eaten and the game's overall state (playing, game won, player died, ready to start the play).
 
 เมื่อกดเกม JPacman ผู้เล่นจะเจอกับหน้า Home ซึ่งจะมีปุ่ม TAP THE SCREEN TO START กดไปยังหน้าเลือกสกิลตัวละคร ภายในหน้าสกิลตัวละครผู้เล่นจะพบ สกิลต่างๆ เช่น Pacman Buble Santy Mulan Tom Dropy Chloe ให้เลือกเล่น เมื่อผู้เล่นกดปุ่ม BACK จะกลับไปยังหน้า Home เเต่ถ้าหากกดSELECT จะพาผู้เล่นไปยังหน้าเลือกธีม ภายในหน้าเลือกธีมผู้เล่นจะพบกับธีมทั้งหมด 5 ธีม ได้เเก่ Valentine China Christmas Halloween Songkran เมื่อเลือกธีมได้เเล้วให้กด SELECT เพื่อไปยังหน้าเล่นเกม หากผู้เล่นต้องการกับไปเลือกสกิลตัวละครให้กด BACK 
@@ -159,8 +229,9 @@ The user interface for JPacman is relatively simple. The game is rectangular boa
    
 
 
-
+```
 ## 5. Development Requirements
+```
 
 JPacman should be developed in Java. It should be set up so that it
 can easily be used by (the latest versions of) standard (open source) Java development tools, such as maven, JUnit, Eclipse/IntelliJ, cobertura, etc. To allow for working with maven, the maven standard directory structure should be used.  Since the educational purposes include testing, JPacman should be delivered with an extensive test suite.
