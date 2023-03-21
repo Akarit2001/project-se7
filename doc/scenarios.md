@@ -212,8 +212,10 @@ the game start page
 
 
 
-
+```
 ## 4. User Interface
+```
+
 The user interface for JPacman is relatively simple. The game is rectangular board, which can be read from a special text file with simple character encoding. On the GUI, special (animated) images or colored squares are used for the ghost, food, empty cells, and wall cells on the board. The direction of the last (attempted) move is reflected in the image used for the player. The GUI furthermore contains a "Start", and "Stop" button (at the bottom of the GUI), as well as an indicator for the amount of food eaten and the game's overall state (playing, game won, player died, ready to start the play).
 
 เมื่อกดเกม JPacman ผู้เล่นจะเจอกับหน้า Home ซึ่งจะมีปุ่ม TAP THE SCREEN TO START กดไปยังหน้าเลือกสกิลตัวละคร ภายในหน้าสกิลตัวละครผู้เล่นจะพบ สกิลต่างๆ เช่น Pacman Buble Santy Mulan Tom Dropy Chloe ให้เลือกเล่น เมื่อผู้เล่นกดปุ่ม BACK จะกลับไปยังหน้า Home เเต่ถ้าหากกดSELECT จะพาผู้เล่นไปยังหน้าเลือกธีม ภายในหน้าเลือกธีมผู้เล่นจะพบกับธีมทั้งหมด 5 ธีม ได้เเก่ Valentine China Christmas Halloween Songkran เมื่อเลือกธีมได้เเล้วให้กด SELECT เพื่อไปยังหน้าเล่นเกม หากผู้เล่นต้องการกับไปเลือกสกิลตัวละครให้กด BACK 
@@ -227,8 +229,9 @@ The user interface for JPacman is relatively simple. The game is rectangular boa
    
 
 
-
+```
 ## 5. Development Requirements
+```
 
 JPacman should be developed in Java. It should be set up so that it
 can easily be used by (the latest versions of) standard (open source) Java development tools, such as maven, JUnit, Eclipse/IntelliJ, cobertura, etc. To allow for working with maven, the maven standard directory structure should be used.  Since the educational purposes include testing, JPacman should be delivered with an extensive test suite.
