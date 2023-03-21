@@ -8,6 +8,7 @@ import org.checkerframework.checker.units.qual.Luminance;
 
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.PacmanConfigurationException;
+import nl.tudelft.jpacman.audio.PacManSoundPlayer;
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.level.Level;
@@ -84,6 +85,7 @@ public class SinglePlayerGame extends Game {
 
     @Override
     public void levelWon() {
+        PacManSoundPlayer.playWin();
         this.setWin(false);
         nextState();
         stop();
@@ -97,6 +99,7 @@ public class SinglePlayerGame extends Game {
 
     @Override
     public void levelLost() {
+        PacManSoundPlayer.playLost();
         this.setLost(true);
         stop();
 

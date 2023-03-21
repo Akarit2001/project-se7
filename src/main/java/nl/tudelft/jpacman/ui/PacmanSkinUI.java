@@ -2,6 +2,7 @@ package nl.tudelft.jpacman.ui;
 
 import javax.swing.*;
 
+import nl.tudelft.jpacman.audio.PacManSoundPlayer;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 
@@ -168,8 +169,14 @@ public class PacmanSkinUI extends JPanel {
         mainPanel.add(buttonPanel, gbc);
         add(mainPanel, BorderLayout.CENTER);
 
-        leftButton.addActionListener(e -> changeSkin(-1));
-        rightButton.addActionListener(e -> changeSkin(1));
+        leftButton.addActionListener(e -> {
+            PacManSoundPlayer.playBtnClick();
+            changeSkin(-1);
+        });
+        rightButton.addActionListener(e -> {
+            PacManSoundPlayer.playBtnClick();
+            changeSkin(1);
+        });
         setButtonDimensions(leftButton, 50, 70);
         setButtonDimensions(rightButton, 50, 70);
 

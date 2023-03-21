@@ -12,6 +12,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
+
+import nl.tudelft.jpacman.audio.PacManSoundPlayer;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.ui.ScorePanel.ScoreFormatter;
@@ -287,6 +289,7 @@ public class PacManUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        PacManSoundPlayer.playBtnClick();
         if (e.getSource() == btnSkin) {
             cardLayout.show(cardPanel, "themes");
         } else if (e.getSource() == btnBack) {

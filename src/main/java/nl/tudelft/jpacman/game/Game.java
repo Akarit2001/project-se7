@@ -2,6 +2,7 @@ package nl.tudelft.jpacman.game;
 
 import java.util.List;
 
+import nl.tudelft.jpacman.audio.PacManSoundPlayer;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.Level.LevelObserver;
@@ -116,6 +117,7 @@ public abstract class Game implements LevelObserver {
             // execute player move.
             getLevel().move(player, direction);
             pointCalculator.pacmanMoved(player, direction);
+            PacManSoundPlayer.playWlak();
         }
     }
 
@@ -145,6 +147,7 @@ public abstract class Game implements LevelObserver {
     }
 
     public void setWin(Boolean bl) {
+        
         win = bl;
     }
 

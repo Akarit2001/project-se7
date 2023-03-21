@@ -2,6 +2,8 @@ package nl.tudelft.jpacman.ui;
 
 import javax.swing.*;
 import java.awt.*;
+
+import nl.tudelft.jpacman.audio.PacManSoundPlayer;
 import nl.tudelft.jpacman.game.Game;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ public class ThemesUI extends JPanel {
     private JLabel imageLabel;
     private JLabel ThemeNamePanel;
     // files name
-    private final String[] themString = { "Valentine", "China", "Christmas", "Halloween","Songkran"};
+    private final String[] themString = { "Valentine", "China", "Christmas", "Halloween", "Songkran" };
     private List<ImageIcon> imageBg = new ArrayList<>();
     private int indexOfTheme;
     private PacManUI pacManUI;
@@ -57,10 +59,14 @@ public class ThemesUI extends JPanel {
             prevTheme();
         });
         confirmButton.addActionListener(e -> {
+            PacManSoundPlayer.playBtnClick();
             game.changeBoard(themString[indexOfTheme]);
             pacManUI.setGameStart();
         });
-        backButton.addActionListener(e -> pacManUI.pageSkins());
+        backButton.addActionListener(e -> {
+            PacManSoundPlayer.playBtnClick();
+            pacManUI.pageSkins();
+        });
         themeItemJPanel.setBackground(new java.awt.Color(255, 0, 0));
 
         c.insets = new Insets(-50, 100, 100, 0);
@@ -139,6 +145,7 @@ public class ThemesUI extends JPanel {
     }
 
     private void prevTheme() {
+        PacManSoundPlayer.playBtnClick();
         if (indexOfTheme == 0) {
             indexOfTheme = imageBg.size();
         }
@@ -149,6 +156,7 @@ public class ThemesUI extends JPanel {
     }
 
     private void nextTheme() {
+        PacManSoundPlayer.playBtnClick();
         if (indexOfTheme == imageBg.size() - 1) {
             indexOfTheme = -1;
         }

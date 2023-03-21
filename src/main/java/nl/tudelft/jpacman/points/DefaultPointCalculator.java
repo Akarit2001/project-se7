@@ -1,5 +1,6 @@
 package nl.tudelft.jpacman.points;
 
+import nl.tudelft.jpacman.audio.PacManSoundPlayer;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.level.Pellet;
 import nl.tudelft.jpacman.level.Player;
@@ -18,6 +19,7 @@ public class DefaultPointCalculator implements PointCalculator {
 
     @Override
     public void consumedAPellet(Player player, Pellet pellet) {
+        PacManSoundPlayer.playEat();
         player.addPoints(pellet.getValue());
     }
 
