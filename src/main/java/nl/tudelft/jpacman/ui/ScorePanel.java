@@ -2,6 +2,7 @@ package nl.tudelft.jpacman.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,6 +43,8 @@ public class ScorePanel extends JPanel {
      * The way to format the score information.
      */
     private ScoreFormatter scoreFormatter = DEFAULT_SCORE_FORMATTER;
+    private CustomFont customFont = new CustomFont();
+    Font font = customFont.fontFormat();
 
     /**
      * Creates a new score panel with a column for each player.
@@ -53,18 +56,26 @@ public class ScorePanel extends JPanel {
         super();
         assert players != null;
 
-        setLayout(new GridLayout(2, players.size()));
-
+        customFont.setSizeFont(18f);
+        Font font = customFont.fontFormat();
+        setLayout(new BorderLayout());
+        this.setBackground(Color.BLACK);
         for (int i = 1; i <= players.size(); i++) {
-            add(new JLabel("Player " + i, JLabel.CENTER));
+            JLabel player = new JLabel("        Player " + i);
+            player.setFont(font);
+            player.setForeground(Color.YELLOW);
+            this.add(player, BorderLayout.WEST);
 
         }
         scoreLabels = new LinkedHashMap<>();
         for (Player player : players) {
             JLabel scoreLabel = new JLabel("0", JLabel.CENTER);
+            scoreLabel.setFont(font);
+            scoreLabel.setForeground(Color.YELLOW);
             scoreLabels.put(player, scoreLabel);
-            add(scoreLabel);
+            this.add(scoreLabel, BorderLayout.CENTER);
         }
+
     }
 
     /**
@@ -75,7 +86,7 @@ public class ScorePanel extends JPanel {
             Player player = entry.getKey();
             String score = "";
             if (!player.isAlive()) {
-                score = "You died. ";
+                score = "YOU DIED!";
             }
             score += scoreFormatter.format(player);
             entry.getValue().setText(score);
@@ -110,6 +121,11 @@ public class ScorePanel extends JPanel {
     }
 
     public void addPauseButton(JButton btnstop) {
-        add(btnstop, BorderLayout.LINE_END);
+        add(btnstop, BorderLayout.EAST);
     }
+
+    public void addQuitButton(JButton btnquit) {
+        // add(btnquit, BorderLayout.EAST);
+    }
+
 }

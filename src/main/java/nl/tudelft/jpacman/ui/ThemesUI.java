@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThemesUI extends JPanel {
-
+    private CustomFont customFont = new CustomFont();
     private JPanel themeItemJPanel;
     private JButton prevButton;
     private JButton nextButton;
@@ -23,6 +23,7 @@ public class ThemesUI extends JPanel {
     private List<ImageIcon> imageBg = new ArrayList<>();
     private int indexOfTheme;
     private PacManUI pacManUI;
+    Font font = customFont.fontFormat();
 
     public ThemesUI(PacManUI pacManUI, Game game) {
         this.pacManUI = pacManUI;
@@ -127,7 +128,9 @@ public class ThemesUI extends JPanel {
         // Create title panel with title label
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel("Select Theme");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        customFont.setSizeFont(24f);
+        Font font1 = customFont.fontFormat();
+        titleLabel.setFont(font1);
         titleLabel.setForeground(Color.YELLOW);
         titlePanel.setBackground(new Color(0, 0, 0, 0));
         titlePanel.add(titleLabel);
@@ -143,7 +146,9 @@ public class ThemesUI extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(30, 0, 0, 0);
         ThemeNamePanel = new JLabel(themString[indexOfTheme]);
-        ThemeNamePanel.setFont(new Font("Arial", Font.BOLD, 20));
+        customFont.setSizeFont(22f);
+        Font font2 = customFont.fontFormat();
+        ThemeNamePanel.setFont(font2);
         ThemeNamePanel.setForeground(Color.YELLOW);
         this.add(ThemeNamePanel, c);
     }

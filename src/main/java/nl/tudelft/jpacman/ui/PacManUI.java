@@ -3,6 +3,8 @@ package nl.tudelft.jpacman.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.*;
@@ -12,6 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import nl.tudelft.jpacman.audio.PacManSoundPlayer;
 import nl.tudelft.jpacman.game.Game;
@@ -85,6 +88,7 @@ public class PacManUI extends JFrame implements ActionListener {
     JPanel buttonPanel = new JPanel();
 
     JButton btnstop = new JButton("Stop");
+    // JButton btnquit = new JButton("quit");
     JButton btnWin = new JButton("Home");
     JButton btnSkin = new JButton("select");
     JButton btnBack = new JButton("back");
@@ -97,10 +101,13 @@ public class PacManUI extends JFrame implements ActionListener {
     HomeUI homeUI = new HomeUI();
     ThemesUI themesUI;
 
+    private CustomFont customFont = new CustomFont();
     PacManSprites pacmanSprites;
     PacmanSkinUI pacmanSkinUI;
     private String theme;
     PacManSoundPlayer pacManSoundPlayer;
+
+    Font font = customFont.fontFormat();
 
     public String getTheme() {
         return theme;
@@ -121,7 +128,11 @@ public class PacManUI extends JFrame implements ActionListener {
         this.game = game;
         this.theme = "valentine";
 
+        customFont.setSizeFont(18f);
+        Font font = customFont.fontFormat();
+
         themesUI = new ThemesUI(this, game);
+
         // set size JFrame
         setMinimumSize(new Dimension(800, 600));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -146,20 +157,33 @@ public class PacManUI extends JFrame implements ActionListener {
         // set theme
         boardPanel.setBackground("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
 
-        // btnstop.setIcon(new
-        // ImageIcon("src\\main\\resources\\btnRestart.png"));
-        // btnstop.setOpaque(false);
-        // btnstop.setBorderPainted(false);
-        // btnstop.setFocusPainted(false);
-        // btnstop.setContentAreaFilled(false);
+        btnstop.setFont(font);
+        btnstop.setText(" Stop ");
+        btnstop.setForeground(Color.YELLOW);
+        btnstop.setOpaque(false);
+        btnstop.setBorderPainted(false);
+        btnstop.setFocusPainted(false);
+        btnstop.setContentAreaFilled(false);
+
+        /*
+         * btnquit.setFont(font);
+         * btnquit.setText("Quit  ");
+         * btnquit.setForeground(Color.YELLOW);
+         * btnquit.setOpaque(false);
+         * btnquit.setBorderPainted(false);
+         * btnquit.setFocusPainted(false);
+         * btnquit.setContentAreaFilled(false);
+         */
 
         btnWin.addActionListener(this);
         btnSkin.addActionListener(this);
         btnBack.addActionListener(this);
         btnrestart.addActionListener(this);
         btnstop.addActionListener(this);
+        // btnquit.addActionListener(this);
 
         scorePanel.addPauseButton(btnstop);
+        // scorePanel.addQuitButton(btnquit);
 
         winUI.addButton(btnWin, btnrestart);
         pacmanSkinUI.addButton(btnSkin, btnBack);
@@ -226,7 +250,10 @@ public class PacManUI extends JFrame implements ActionListener {
 
     private JDialog createGameOverDialog() {
         JDialog gameOverDialog = new JDialog(this, "Game Over", true);
+        gameOverDialog.setUndecorated(true);
         gameOverDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        Border border = BorderFactory.createLineBorder(Color.WHITE, 4);
+        gameOverDialog.getRootPane().setBorder(border);
         gameOverDialog.setLayout(new BorderLayout());
 
         // add mouse listener to content pane
@@ -238,30 +265,46 @@ public class PacManUI extends JFrame implements ActionListener {
         });
 
         JPanel backgroundPanel = new JPanel() {
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\sprite\\themes\\" + theme + "\\board.png");
+                ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\bgOver.png");
                 Image image = imageIcon.getImage();
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+
             }
         };
 
-        JLabel gameOverLabel = new JLabel("You Died", SwingConstants.CENTER);
-        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        gameOverLabel.setForeground(Color.RED);
-        int padding = 20;
-        gameOverDialog.setUndecorated(true);
-        gameOverLabel.setBorder(BorderFactory.createEmptyBorder(padding, 0, padding, 0));
-
         JLabel scoreLabel = new JLabel("Your Score: " + game.getScore(), SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        customFont.setSizeFont(24f);
+        Font font1 = customFont.fontFormat();
+        scoreLabel.setFont(font1);
         scoreLabel.setForeground(Color.WHITE);
+        int topPadding = 20;
+        scoreLabel.setBorder(BorderFactory.createCompoundBorder(scoreLabel.getBorder(),
+                BorderFactory.createEmptyBorder(topPadding, 0, 0, 0)));
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new java.awt.Color(255, 255, 255, 0));
+        buttonPanel.setBackground(new Color(0, 0, 0));
         JButton restartButton = createRestartButton(gameOverDialog);
         JButton homeButton = createHomeButton(gameOverDialog);
+
+        homeButton.setFont(font);
+        homeButton.setText("  HOME  ");
+        homeButton.setForeground(Color.YELLOW);
+        homeButton.setOpaque(false);
+        homeButton.setBorderPainted(false);
+        homeButton.setFocusPainted(false);
+        homeButton.setContentAreaFilled(false);
+
+        restartButton.setFont(font);
+        restartButton.setText(" RESTART ");
+        restartButton.setForeground(Color.YELLOW);
+        restartButton.setOpaque(false);
+        restartButton.setBorderPainted(false);
+        restartButton.setFocusPainted(false);
+        restartButton.setContentAreaFilled(false);
 
         gameOverDialog.setContentPane(backgroundPanel);
         buttonPanel.add(restartButton);
@@ -273,9 +316,9 @@ public class PacManUI extends JFrame implements ActionListener {
         southPanel.add(buttonPanel);
 
         backgroundPanel.setLayout(new BorderLayout());
-        backgroundPanel.add(gameOverLabel, BorderLayout.NORTH);
+
         backgroundPanel.add(southPanel, BorderLayout.SOUTH);
-        backgroundPanel.add(scoreLabel, BorderLayout.CENTER);
+        backgroundPanel.add(scoreLabel, BorderLayout.NORTH);
         gameOverDialog.setSize(350, 250);
         gameOverDialog.setLocationRelativeTo(this);
 
@@ -286,8 +329,9 @@ public class PacManUI extends JFrame implements ActionListener {
         JButton restartButton = new JButton("Restart");
         restartButton.addActionListener(e -> {
             dialog.dispose();
+            requestFocus();
             game.reStart();
-            GameDialog(boardPanel);
+            GameDialog();
         });
         return restartButton;
     }
@@ -296,7 +340,9 @@ public class PacManUI extends JFrame implements ActionListener {
         JButton homeButton = new JButton("Home");
         homeButton.addActionListener(e -> {
             dialog.dispose();
+            requestFocus();
             game.reStart();
+
             cardLayout.show(cardPanel, "home");
             pacManSoundPlayer.playBgSound();
         });
@@ -318,36 +364,58 @@ public class PacManUI extends JFrame implements ActionListener {
             game.reStart();
         } else if (e.getSource() == btnrestart) {
             cardLayout.show(cardPanel, "PacmanSkin");
+
             game.setWin(false);
             game.reStart();
         } else if (e.getSource() == btnstop) {
             game.stop();
-            GameDialog(boardPanel);
-        }
+            GameDialog();
+        } // else if (e.getSource() == btnquit) {
+          // game.stop();
+          // QuitDialog();
+          // }
 
     }
 
     public void setGameStart() {
         cardLayout.show(cardPanel, "gameplay");
-        GameDialog(boardPanel);
+        GameDialog();
     }
 
-    private void GameDialog(BoardPanel boardPanel) {
-        JDialog frame = new JDialog(this, true);
+    private void GameDialog() {
+        JDialog frame = new JDialog(this);
+        addComponentListener(new ComponentAdapter() {
+            public void componentMoved(ComponentEvent e) {
+                int x = getLocation().x + (getWidth() - frame.getWidth()) / 2;
+                int y = getLocation().y + (getHeight() - frame.getHeight()) / 2;
+                frame.setLocation(x, y);
+
+            }
+        });
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(800, 580));
+        frame.setMinimumSize(new Dimension(GamePlay.getWidth(), GamePlay.getHeight()));
         frame.setUndecorated(true);
         frame.setBackground(new Color(100, 100, 100, 50));
-        frame.setLocationRelativeTo(boardPanel);
+        frame.setLocationRelativeTo(this);
         frame.requestFocusInWindow();
-        JLabel titleLabel = new JLabel("Tap the screen to play");
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setForeground(Color.YELLOW);
-        titleLabel.setBorder(null);
 
-        // Add mouse listener to the frame
-        frame.getContentPane().add(titleLabel, BorderLayout.CENTER);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(Color.BLACK);
+
+        JLabel titleLabel = new JLabel("Tap the screen to play");
+        titleLabel.setFont(font);
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setForeground(Color.YELLOW);
+
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.setBackground(new Color(3, 3, 3, 200));
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        titlePanel.add(titleLabel, BorderLayout.CENTER);
+
+        panel.add(titlePanel, BorderLayout.CENTER); // Add titlePanel to the top of the panel
+
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.setVisible(true);
         frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -371,6 +439,37 @@ public class PacManUI extends JFrame implements ActionListener {
         frame.pack();
         frame.setVisible(true);
     }
+
+    /*
+     * private void QuitDialog() {
+     * 
+     * JDialog dialog = new JDialog(this, "Confirmation", true);
+     * JLabel label = new JLabel("Do you want to exit?");
+     * JPanel panel = new JPanel();
+     * panel.add(label);
+     * dialog.add(panel);
+     * dialog.setUndecorated(true);
+     * JButton yesButton = new JButton("Yes");
+     * yesButton.addActionListener(e1 -> {
+     * System.exit(0);
+     * dialog.dispose();
+     * });
+     * JButton noButton = new JButton("No");
+     * noButton.addActionListener(e1 -> {
+     * game.start();
+     * dialog.dispose();
+     * requestFocus();
+     * });
+     * JPanel buttonPanel = new JPanel();
+     * buttonPanel.add(yesButton);
+     * buttonPanel.add(noButton);
+     * dialog.add(buttonPanel, "South");
+     * dialog.pack();
+     * dialog.setLocationRelativeTo(this);
+     * dialog.setVisible(true);
+     * 
+     * }
+     */
 
     public void pageSkins() {
         cardLayout.show(cardPanel, "PacmanSkin");

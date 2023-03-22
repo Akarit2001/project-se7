@@ -8,15 +8,13 @@ import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import java.awt.*;
 
-//Merge my code with the previous one.
-
 public class PacmanSkinUI extends JPanel {
     JPanel buttonPanel = new JPanel();
     // create two buttons to switch between cards
 
     ImageIcon background;
     JLabel bg = new JLabel();
-
+    private CustomFont customFont = new CustomFont();
     private JButton selectButton;
     private SkinChangeListener skinChangeListener;
     private final ImageIcon[] skinImages = new ImageIcon[] {
@@ -55,6 +53,8 @@ public class PacmanSkinUI extends JPanel {
     private final JButton leftButton = new JButton("<");
     private final JButton rightButton = new JButton(">");
     private final Game game;
+
+    Font font = customFont.fontFormat();
 
     public PacmanSkinUI(PacManSprites pacmanSprites, Game game) {
         this.setBackground("src\\main\\resources\\bgUi.png");
@@ -145,7 +145,9 @@ public class PacmanSkinUI extends JPanel {
         titlePanelConstraints.anchor = GridBagConstraints.CENTER;
 
         JLabel titleLabel = new JLabel("Select Skin");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        customFont.setSizeFont(24f);
+        Font font1 = customFont.fontFormat();
+        titleLabel.setFont(font1);
         titleLabel.setForeground(Color.YELLOW);
         titlePanel.add(titleLabel);
 
@@ -167,7 +169,9 @@ public class PacmanSkinUI extends JPanel {
         JPanel skinNamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         skinNamePanel.setBackground(new Color(0, 0, 0, 0));
         skinNamePanel.setOpaque(false);
-        skinNameLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        customFont.setSizeFont(24f);
+        Font font2 = customFont.fontFormat();
+        skinNameLabel.setFont(font2);
         skinNameLabel.setForeground(Color.YELLOW);
         skinNamePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         skinNamePanel.add(skinNameLabel);
